@@ -1,0 +1,1250 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ESDWaveformVerifier</name>
+    </assembly>
+    <members>
+        <member name="T:ESDWaveformVerifier.CDMJS002.CDMJS002Standard">
+            <summary>
+            Class that provides calculations for the CDM JS-002 Standard
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.CDMJS002.CDMJS002Standard"/> class
+            </summary>
+            <param name="waveform">The CDM waveform to provide calculations on</param>
+            <param name="signedVoltage">The signed voltage</param>
+            <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
+            <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.IsLargeTarget">
+            <summary>
+            Gets a value indicating whether the CDM target is the Large target or not (small if not)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.OscilloscopeIsHighBandwidth">
+            <summary>
+            Gets a value indicating whether the oscilloscope used is high bandwidth or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.PeakCurrentValue">
+            <summary>
+            Gets the calculated Peak Current Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.PeakCurrentDataPoint">
+            <summary>
+            Gets the calculated Peak Current DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.PeakCurrentAllowedMinimum">
+            <summary>
+            Gets the calculated Peak Current allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.PeakCurrentAllowedMaximum">
+            <summary>
+            Gets the calculated Peak Current allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.PeakCurrentIsPassing">
+            <summary>
+            Gets a value indicating whether the Peak Current Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.RiseTimeValue">
+            <summary>
+            Gets the calculated Rise Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.RiseTimeStartDataPoint">
+            <summary>
+            Gets the calculated Rise Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.RiseTimeEndDataPoint">
+            <summary>
+            Gets the calculated Rise Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.RiseTimeAllowedMinimum">
+            <summary>
+            Gets the calculated Rise Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.RiseTimeAllowedMaximum">
+            <summary>
+            Gets the calculated Rise Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.RiseTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Rise Time Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.FullWidthHalfMaxValue">
+            <summary>
+            Gets the calculated Full Width at Half Maximum Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.FullWidthHalfMaxStartDataPoint">
+            <summary>
+            Gets the calculated Full Width at Half Maximum starting DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.FullWidthHalfMaxEndDataPoint">
+            <summary>
+            Gets the calculated Full Width at Half Maximum ending DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.FullWidthHalfMaxAllowedMinimum">
+            <summary>
+            Gets the calculated Full Width at Half Maximum allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.FullWidthHalfMaxAllowedMaximum">
+            <summary>
+            Gets the calculated Full Width at Half Maximum allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.FullWidthHalfMaxIsPassing">
+            <summary>
+            Gets a value indicating whether the Full Width at Half Maximum Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.UndershootValue">
+            <summary>
+            Gets the signed Undershoot Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.UndershootDataPoint">
+            <summary>
+            Gets the signed Undershoot DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.UndershootAllowedMaximumPercent">
+            <summary>
+            Gets the Undershoot allowed maximum as a percentage
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.UndershootAllowedMaximumValue">
+            <summary>
+            Gets the Undershoot allowed maximum value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.UndershootIsPassing">
+            <summary>
+            Gets a value indicating whether the Undershoot Value is passing or not
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculatePeakCurrent">
+            <summary>
+            Calculates the Peak Current related values
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculateRiseTime(System.Double,System.Double)">
+            <summary>
+            Calculates the Rise Time related values
+            </summary>
+            <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculateFullWidthAtHalfMax(System.Double)">
+            <summary>
+            Calculates the Full Width at Half Max related values
+            </summary>
+            <param name="fullWidthHalfMaxPercent">(Optional) The threshold of where to measure the FWHM as a percent of the peak current (Default: 50%)</param>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculateUndershoot(System.Double)">
+            <summary>
+            Calculates the Undershoot related values
+            </summary>
+            <param name="undershootMaxTimeFWHMMultiplier">(Optional) The multiplier of the FWHM time to determine how long after the peak current time to search for undershoot (Default: 2.5x)</param>
+        </member>
+        <member name="T:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics">
+            <summary>
+            A class that represents the CDM JS-002 Waveform Characteristics as found in JS-002 - Section 6.7 - Tables 1 and 2
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.characteristicSets">
+            <summary>
+            Private backing store for the sets of CDM JS-002 characteristics.
+            These are derived from JS-002 - Section 6.7 - Tables 1 and 2.
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.RiseTimeMax(System.Double,System.Boolean,System.Boolean)">
+            <summary>
+            Returns the max allowed CDM Rise Time to be within JS-002 specification
+            </summary>
+            <param name="signedCDMVoltage">The sign value of the CDM pulse waveform</param>
+            <param name="isLargeTarget">A value indicating whether the CDM target is large or not (if not, then it is small)</param>
+            <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope is high bandwidth (6GHz+) or not</param>
+            <returns>The max allowed CDM Rise Time to be within JS-002 specification</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.PeakCurrentNominalMinMax(System.Double,System.Boolean,System.Boolean)">
+            <summary>
+            Returns the nominal (Item1), min (Item2), and max (Item3) allowed CDM Peak Current to be within the JS-002 specification
+            </summary>
+            <param name="signedVoltage">The sign value of the CDM pulse waveform</param>
+            <param name="isLargeTarget">A value indicating whether the CDM target is large or not (if not, then it is small)</param>
+            <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope is high bandwidth (6GHz+) or not</param>
+            <returns>The nominal (Item1), min (Item2), and max (Item3) allowed CDM Peak Current to be within the JS-002 specification</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.FullWidthHalfMaxNominalMinMax(System.Double,System.Boolean,System.Boolean)">
+            <summary>
+            Returns the nominal (Item1), min (Item2), and max (Item3) allowed CDM Full Width at Half Maximum to be within the JS-002 specification
+            </summary>
+            <param name="signedCDMVoltage">The sign value of the CDM pulse waveform</param>
+            <param name="isLargeTarget">A value indicating whether the CDM target is large or not (if not, then it is small)</param>
+            <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope is high bandwidth (6GHz+) or not</param>
+            <returns>The nominal (Item1), min (Item2), and max (Item3) allowed CDM Full Width at Half Maximum to be within the JS-002 specification</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.UndershootMaxPercent(System.Double,System.Boolean,System.Boolean)">
+            <summary>
+            Returns the max allowed CDM Undershoot as a percentage to be within the JS-002 specification
+            </summary>
+            <param name="signedCDMVoltage">The sign value of the CDM pulse waveform</param>
+            <param name="isLargeTarget">A value indicating whether the CDM target is large or not (if not, then it is small)</param>
+            <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope is high bandwidth (6GHz+) or not</param>
+            <returns>The max allowed CDM Undershoot as a percentage to be within ESDA/JEDEC joint specification</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.GenerateSetForCDMVoltageAndCharacteristics(System.Double,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a new set for the CDM voltage, interpolated from the JS-002 specification.
+            </summary>
+            <param name="cdmVoltage">The voltage of the CDM pulse waveform (polarity is ignored, absolute value will be used)</param>
+            <param name="isLargeTarget">A value indicating whether the CDM target is large or not (if not, then it is small)</param>
+            <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope is high bandwidth (6GHz+) or not</param>
+            <returns>A new set for the CDM voltage, interpolated from the JS-002 specification</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet">
+            <summary>
+            Class that represents the JS-002 allowed characteristics of a CDM waveform for the given Test Condition, Target Size, and oscilloscope bandwidth.
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.IsHighBandwidth">
+            <summary>
+            Gets or sets a value indicating whether the oscilloscope is high bandwidth (6GHz+) or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.IsLargeTarget">
+            <summary>
+            Gets or sets a value indicating whether the CDM target is large or not (if not, then it is small)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.TestCondition">
+            <summary>
+            Gets or sets the test condition the set represents, as Voltage
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.PeakCurrent">
+            <summary>
+            Gets or sets the allowed min (Item1) max (Item2) range of the Peak Current in Amps
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.RiseTimeMax">
+            <summary>
+            Gets or sets the maximum allowed risetime in Seconds
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.FullWidthAtHalfMaximum">
+            <summary>
+            Gets or sets the allowed min (Item1) max (Item2) range of the Full Width at Half Maximum in Seconds
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.UndershootMaxPercent">
+            <summary>
+            Gets or sets the maximum allowed undershoot as a percent (0.0 - 1.0)
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002WaveformCharacteristics.CDMJS002WaveformCharacteristicsSet.Clone">
+            <summary>
+            Returns a copy of this set
+            </summary>
+            <returns>A copy of this set</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.DataTypes.DataPoint">
+            <summary>
+            A struct that represents a data point in two dimensional space.
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.DataPoint.#ctor(System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.DataTypes.DataPoint"/> struct.
+            </summary>
+            <param name="abscissa">The horizontal component of the data point.</param>
+            <param name="ordinate">The vertical component of the data point.</param>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.DataPoint.X">
+            <summary>
+            Gets or sets the abscissa component of the data point.
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.DataPoint.Y">
+            <summary>
+            Gets or sets the ordinate component of the data point.
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.DataPoint.ToString">
+            <summary>
+            Returns a string representation of the instance.
+            </summary>
+            <returns>A string representation of the instance.</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.DataTypes.DataPointExtensions">
+            <summary>
+            An extension class that provides additional DataPoint functionality
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.DataPointExtensions.InvertYValueIfNegativePolarity(ESDWaveformVerifier.DataTypes.DataPoint,System.Boolean)">
+            <summary>
+            Returns a DataPoint that is inverted (Y-value only) if the polarity is negative, and the original waveform if positive
+            </summary>
+            <param name="dataPoint">The DataPoint to invert (Y-value only) if the polarity is negative</param>
+            <param name="isPositivePolarity">A value indicating whether the polarity is positive or not</param>
+            <returns>A DataPoint that is inverted (Y-value only) if the polarity is negative, and the original DataPoint if positive</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.DataTypes.DoubleRangeExtensions">
+            <summary>
+            Provides extended functionality for double ranges
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.DoubleRangeExtensions.CenterOfRange(System.Double,System.Double)">
+            <summary>
+            Returns a value that is exactly between the two range values
+            </summary>
+            <param name="rangeVal1">The first range value</param>
+            <param name="rangeVal2">The second range value</param>
+            <returns>A value that is exactly between the two range values</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.DoubleRangeExtensions.EquivalentValueInNewRange(System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Returns a value that is in the equivalent position within the new range as it was in the original range.
+            </summary>
+            <param name="origValue">The original value to find the equivalent position value of in the new range</param>
+            <param name="origRangeMax">The original range maximum value</param>
+            <param name="origRangeMin">The original range minimum value</param>
+            <param name="newRangeMax">The new range maximum value</param>
+            <param name="newRangeMin">The new range minimum value</param>
+            <returns>A value that is in the equivalent position within the new range as it was in the original range.</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.DoubleRangeExtensions.PercentWithinRange(System.Double,System.Double,System.Double)">
+            <summary>
+            Returns a value that is where the value lies between rangeMin and rangeMax as a percentage.
+            If value is very close to rangeMin, it might return 0.01 (1%).
+            If value is very close to rangeMax, it might return 0.99 (99%).
+            </summary>
+            <param name="value">The value to find where it lies percentage wise between rangeMin and rangeMax</param>
+            <param name="rangeMax">The range maximum</param>
+            <param name="rangeMin">The range minimum</param>
+            <returns>A value that is where the value lies between rangeMin and rangeMax as a percentage.</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.DoubleRangeExtensions.BetweenInclusive(System.Double,System.Double,System.Double)">
+            <summary>
+            Determines if a value is in the given range.
+            </summary>
+            <param name="boundary1">The first boundary the value must be between in order to be true.</param>
+            <param name="boundary2">The second boundary the value must be between in order to be true.</param>
+            <param name="testValue">The value to test.</param>
+            <returns>A boolean value indicating whether the test value is in the given range.</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial">
+            <summary>
+            Defines a fifth degree polynomial (Quintic equation)
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial"/> class.
+            </summary>
+            <param name="a0">The zero degree polynomial coefficient</param>
+            <param name="a1">The first degree polynomial coefficient</param>
+            <param name="a2">The second degree polynomial coefficient</param>
+            <param name="a3">The third degree polynomial coefficient</param>
+            <param name="a4">The fourth degree polynomial coefficient</param>
+            <param name="a5">The fifth degree polynomial coefficient</param>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.A0">
+            <summary>
+            Gets the zero degree polynomial coefficient
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.A1">
+            <summary>
+            Gets the first degree polynomial coefficient
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.A2">
+            <summary>
+            Gets the second degree polynomial coefficient
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.A3">
+            <summary>
+            Gets the third degree polynomial coefficient
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.A4">
+            <summary>
+            Gets the fourth degree polynomial coefficient
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.A5">
+            <summary>
+            Gets the fifth degree polynomial coefficient
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.FifthDegreePolynomial.Evaluate(System.Double)">
+            <summary>
+            Returns the result when the value is evaluated in a fifth degree polynomial with the predefined coefficients.
+            </summary>
+            <param name="value">The value to evaluate</param>
+            <returns>the result when the value is evaluated in a fifth degree polynomial with the predefined coefficients</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.DataTypes.ValueExtensions">
+            <summary>
+            An extension class that provides additional value-type functionality
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.ValueExtensions.InvertValueIfNegativePolarity(System.Double,System.Boolean)">
+            <summary>
+            Returns a value that is inverted if the polarity is negative, and the original value if positive
+            </summary>
+            <param name="value">The value to invert if the polarity is negative</param>
+            <param name="isPositivePolarity">A value indicating whether the polarity is positive or not</param>
+            <returns>A value that is inverted if the polarity is negative, and the original value if positive</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.DataTypes.Waveform">
+            <summary>
+            A class that holds waveform data.
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.Waveform.#ctor(System.Collections.Generic.IEnumerable{ESDWaveformVerifier.DataTypes.DataPoint})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.DataTypes.Waveform"/> class.
+            </summary>
+            <param name="dataPoints">The data points that make up this waveform</param>
+        </member>
+        <member name="P:ESDWaveformVerifier.DataTypes.Waveform.DataPoints">
+            <summary>
+            Gets the Data Points that make up this Waveform
+            </summary>
+        </member>
+        <member name="T:ESDWaveformVerifier.DataTypes.WaveformExtensions">
+            <summary>
+            An extension class that provides additional Waveform functionality
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.LeastSquaresFit(ESDWaveformVerifier.DataTypes.Waveform)">
+            <summary>
+            Returns the FifthDegreePolynomial formula for the waveform using the Least Squares Fit method
+            </summary>
+            <param name="input">The Waveform to find the Least Squares Fit FifthDegreePolynomial of</param>
+            <returns>The FifthDegreePolynomial formula for the waveform using the Least Squares Fit method</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.ExponentialFit(ESDWaveformVerifier.DataTypes.Waveform)">
+            <summary>
+            Returns a Tuple(double, double) that are the constants 'a' (Item1) and 'b' (Item2) of the exponential fit for the input Waveform
+            </summary>
+            <param name="input">The Waveform to find the Exponential Fit constants of</param>
+            <returns>Tuple(double, double) that are the constants 'a' (Item1) and 'b' (Item2) of the exponential fit for the input Waveform</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.CreateExponentialFitWaveform(System.Double,System.Double,System.Collections.Generic.IEnumerable{System.Double})">
+            <summary>
+            Creates a Waveform using the time values for X, and the Exponential Fit constants 'a' and 'b' to calculate Y
+            </summary>
+            <param name="a">The Exponential Fit constant 'a'</param>
+            <param name="b">The Exponential Fit constant 'b'</param>
+            <param name="timeValues">The values to use for each DataPoint's X value (time)</param>
+            <returns>A Waveform using the time values for X, and the Exponential Fit constants 'a' and 'b' to calculate Y</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.Gates(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Double)">
+            <summary>
+            Returns a new Waveform which only contains the points who's X-axis resides between the boundaries.
+            </summary>
+            <param name="input">The original waveform.</param>
+            <param name="boundary1">The first waveform boundary.</param>
+            <param name="boundary2">The second waveform boundary.</param>
+            <returns>The gated waveform.</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.Maximum(ESDWaveformVerifier.DataTypes.Waveform)">
+            <summary>
+            Returns the first DataPoint with the maximum Y value of the Waveform, or [0, 0] if no DataPoints exist
+            </summary>
+            <param name="waveform">The Waveform to find the first DataPoint with maximum Y value of</param>
+            <returns>the first DataPoint with maximum Y value of the Waveform, or [0, 0] if no DataPoints exist</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.Minimum(ESDWaveformVerifier.DataTypes.Waveform)">
+            <summary>
+            Returns the first DataPoint with the minimum Y value of the Waveform, or [0, 0] if no DataPoints exist
+            </summary>
+            <param name="waveform">The Waveform to find the first DataPoint with minimum Y value of</param>
+            <returns>the first DataPoint with minimum Y value of the Waveform, or [0, 0] if no DataPoints exist</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.ScaleVertically(ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+            <summary>
+            Returns a new Waveform which has the Y-Axis scaled by the amount specified
+            </summary>
+            <param name="waveform">The original waveform.</param>
+            <param name="scaleFactor">The scaling factor.</param>
+            <returns>The scaled waveform.</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.DataPointAtYThreshold(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Boolean)">
+            <summary>
+            Returns the DataPoint at the Y-value threshold (could be interpolated), or [0, 0] if never crossed
+            </summary>
+            <param name="waveform">The waveform to find the first data point(s) with a Y-value that crosses the threshold</param>
+            <param name="yThreshold">The Y-value threshold to find the first data point crossing</param>
+            <param name="findFirstThreshold">A value indicating whether the first threshold crossing should be returned (false will return the last)</param>
+            <returns>the DataPoint at the Y-value threshold (could be interpolated), or [0, 0] if never crossed</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.TrimStart(ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+            <summary>
+            Returns a new Waveform which only contains the points who's X-axis resides after or equal to the boundary
+            </summary>
+            <param name="waveform">The original waveform.</param>
+            <param name="boundary">The time boundary to trim everything before</param>
+            <returns>The trimmed waveform.</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.TrimEnd(ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+            <summary>
+            Returns a new Waveform which only contains the data points who's X-axis resides before or equal to the boundary
+            </summary>
+            <param name="waveform">The original waveform.</param>
+            <param name="boundary">The time boundary to trim everything after</param>
+            <returns>The trimmed waveform.</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.DataPointAtHBM0OhmJS001MaximumRing(ESDWaveformVerifier.DataTypes.Waveform,ESDWaveformVerifier.DataTypes.FifthDegreePolynomial,System.Double,System.Boolean)">
+            <summary>
+            Returns the DataPoint with the maximum positive/negative Ringing current (Ring1/Ring2) of the decaying HBM waveform within the JS-001 specification
+            </summary>
+            <param name="input">The Waveform to find the maximum positive Ringing current (Ring1) of</param>
+            <param name="leastSquaresFitLine">The least squares fit line equivalent to the waveform</param>
+            <param name="noiseAmount">The amount of noise that should be removed</param>
+            <param name="isPositiveRing">A value indicating whether to return the maximum positive DataPoint, or the negative</param>
+            <returns>The maximum positive Ringing current (Ring1) of the decaying HBM waveform within the JS-001 specification</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.ThresholdCrossingIndexes(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Boolean)">
+            <summary>
+            Finds the threshold crossing indexes of the first data point(s) with a Y-value that crosses the threshold.
+            If a data point's Y-value is exactly the threshold value, only its index is returned.  If the threshold is
+            crossed between two data points, both adjacent data point's indexes are returned.  If no data points cross
+            the threshold, an empty collection is returned.
+            </summary>
+            <param name="waveform">The waveform to find the first data point(s) with a Y-value that crosses the threshold</param>
+            <param name="yThreshold">The Y-value threshold to find the first data point crossing</param>
+            <param name="findFirstThreshold">A value indicating whether the first threshold crossing should be returned (false will return the last)</param>
+            <returns>
+            The threshold crossing indexes of the first data point(s) with a Y-value that crosses the threshold.
+            If a data point's Y-value is exactly the threshold value, only it's index is returned.  If the threshold is
+            crossed between two data points, both adjacent data point's indexes are returned.  If no data points cross
+            the threshold, an empty collection is returned.
+            </returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard">
+            <summary>
+            Class that provides calculations for the HBM 0-Ohm JS-001 Standard
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.absoluteIpsPlus40nsWaveform">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.absoluteIpsPolynomial">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.compensateForNoise">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.compensateForNoiseCutoffTime">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.#ctor(System.Boolean,System.Double,ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard"/> class
+            </summary>
+            <param name="compensateForNoise">A value indicating whether to compensate for noise or not</param>
+            <param name="compensateForNoiseCutoffTime">The time to stop measuring for noise from the beginning of the waveform</param>
+            <param name="waveform">The HBM 0-Ohm waveform to provide calculations on</param>
+            <param name="signedVoltage">The signed voltage</param>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.PeakCurrentValue">
+            <summary>
+            Gets the calculated Peak Current (Ips) Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.PeakCurrentDataPoint">
+            <summary>
+            Gets the calculated Peak Current (Ips) DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.PeakCurrentAllowedMinimum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.PeakCurrentAllowedMaximum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.PeakCurrentIsPassing">
+            <summary>
+            Gets a value indicating whether the Peak Current (Ips) Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.RiseTimeValue">
+            <summary>
+            Gets the calculated Rise Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.RiseTimeStartDataPoint">
+            <summary>
+            Gets the calculated Rise Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.RiseTimeEndDataPoint">
+            <summary>
+            Gets the calculated Rise Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.RiseTimeAllowedMinimum">
+            <summary>
+            Gets the Rise Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.RiseTimeAllowedMaximum">
+            <summary>
+            Gets the Rise Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.RiseTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Rise Time Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.DecayTimeValue">
+            <summary>
+            Gets the calculated Decay Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.DecayTimeStartDataPoint">
+            <summary>
+            Gets the calculated Decay Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.DecayTimeEndDataPoint">
+            <summary>
+            Gets the calculated Decay Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.DecayTimeAllowedMinimum">
+            <summary>
+            Gets the calculated Decay Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.DecayTimeAllowedMaximum">
+            <summary>
+            Gets the calculated Decay Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.DecayTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Decay Time Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.TotalRingPercentValue">
+            <summary>
+            Gets the calculated Total Ring Percent Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.TotalRingAllowedMaximum">
+            <summary>
+            Gets the Total Ring allowed maximum as a %
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.TotalRingIsPassing">
+            <summary>
+            Gets a value indicating whether the Total Ring Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.Ring1PeakDataPoint">
+            <summary>
+            Gets the Ring1 peak DataPoint (maximum positive ring)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.Ring2PeakDataPoint">
+            <summary>
+            Gets the Ring2 peak DataPoint (maximum negative ring)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.AbsoluteIpsPolynomial">
+            <summary>
+            Gets the 5th Degree Polynomial that represents the Least Squares Fit line derived from Ips until Ips+40ns time of the absolute Waveform
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.AbsoluteIpsPlus40nsWaveform">
+            <summary>
+            Gets an absolute Waveform gated to only Ips time until 40ns after Ips time
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.CalculatePeakCurrent">
+            <summary>
+            Calculates the Peak Current (Ips) related values
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.CalculateRiseTime(System.Double,System.Double)">
+            <summary>
+            Calculates the Rise Time related values
+            </summary>
+            <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.CalculateDecayTime">
+            <summary>
+            Calculates the Decay Time related values
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.CalculateRing">
+            <summary>
+            Calculates the Ring as a % of Ips
+            </summary>
+        </member>
+        <member name="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics">
+            <summary>
+            A class that represents the HBM 0-Ohm JS-001 Waveform Specifications as found in JS-001 - Section 5.5 - Table 1
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics.characteristicSets">
+            <summary>
+            Private backing store for the sets of HBM JS-001 Specifications.
+            These are derived from JS-001 - Section 5.5 - Table 1
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics.HBMPeakCurrentNominalMinMax(System.Double)">
+            <summary>
+            Returns the nominal (Item1), min (Item2), and max (Item3) allowed HBM Peak Current to be within JS-001 specification
+            </summary>
+            <param name="hbmVoltage">The voltage of the HBM pulse waveform (polarity is ignored, absolute value will be used)</param>
+            <returns>The nominal (Item1), min (Item2), and max (Item3) allowed HBM Peak Current to be within JS-001 specification</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics.GenerateSetForHBMVoltage(System.Double)">
+            <summary>
+            Generates a new set for the HBM voltage from the JS-001 standard
+            </summary>
+            <param name="hbmVoltage">The voltage of the HBM pulse waveform (polarity is ignored, absolute value will be used)</param>
+            <returns>A new set for the HBM voltage from the JS-001 standard</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics.HBM0OhmJS001WaveformCharacteristicsSet">
+            <summary>
+            Class that represents the allowed characteristics of a HBM waveform for the given Test Condition.
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics.HBM0OhmJS001WaveformCharacteristicsSet.TestCondition">
+            <summary>
+            Gets or sets the test condition the set represents, as Voltage
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics.HBM0OhmJS001WaveformCharacteristicsSet.PeakCurrent">
+            <summary>
+            Gets or sets the allowed min (Item1) max (Item2) range of the Peak Current in Amps
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001WaveformCharacteristics.HBM0OhmJS001WaveformCharacteristicsSet.Clone">
+            <summary>
+            Returns a copy of this set
+            </summary>
+            <returns>A copy of this set</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard">
+            <summary>
+            Class that provides calculations for the HBM 500-Ohm JS-001 Standard
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard"/> class
+            </summary>
+            <param name="waveform">The HBM 500-Ohm waveform to provide calculations on</param>
+            <param name="signedVoltage">The signed voltage</param>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.PeakCurrentValue">
+            <summary>
+            Gets the calculated Peak Current (Ips) Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.PeakCurrentDataPoint">
+            <summary>
+            Gets the calculated Peak Current (Ips) DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.PeakCurrentAllowedMinimum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.PeakCurrentAllowedMaximum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.PeakCurrentIsPassing">
+            <summary>
+            Gets a value indicating whether the Peak Current (Ips) Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.RiseTimeValue">
+            <summary>
+            Gets the calculated Rise Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.RiseTimeStartDataPoint">
+            <summary>
+            Gets the calculated Rise Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.RiseTimeEndDataPoint">
+            <summary>
+            Gets the calculated Rise Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.RiseTimeAllowedMinimum">
+            <summary>
+            Gets the Rise Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.RiseTimeAllowedMaximum">
+            <summary>
+            Gets the Rise Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.RiseTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Rise Time Value is passing or not
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.CalculatePeakCurrent">
+            <summary>
+            Calculates the Peak Current (Ips) related values
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.CalculateRiseTime(System.Double,System.Double)">
+            <summary>
+            Calculates the Rise Time related values
+            </summary>
+            <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
+        </member>
+        <member name="T:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics">
+            <summary>
+            A class that represents the HBM JS-001 500-Ohm Waveform Specifications as found in JS-001 - Section 5.5 - Table 1
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics.characteristicSets">
+            <summary>
+            Private backing store for the sets of HBM JS-001 Specifications.
+            These are derived from JS-001 - Section 5.5 - Table 1
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics.HBMPeakCurrentNominalMinMax(System.Double)">
+            <summary>
+            Returns the nominal (Item1), min (Item2), and max (Item3) allowed HBM Peak Current to be within JS-001 specification
+            </summary>
+            <param name="hbmVoltage">The voltage of the HBM pulse waveform (polarity is ignored, absolute value will be used)</param>
+            <returns>The nominal (Item1), min (Item2), and max (Item3) allowed HBM Peak Current to be within JS-001 specification</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics.GenerateSetForHBMVoltage(System.Double)">
+            <summary>
+            Generates a new set for the HBM voltage from the JS-001 standard
+            </summary>
+            <param name="hbmVoltage">The voltage of the HBM pulse waveform (polarity is ignored, absolute value will be used)</param>
+            <returns>A new set for the HBM voltage from the JS-001 standard</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics.HBM500OhmJS001WaveformCharacteristicsSet">
+            <summary>
+            Class that represents the allowed characteristics of a HBM waveform for the given Test Condition.
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics.HBM500OhmJS001WaveformCharacteristicsSet.TestCondition">
+            <summary>
+            Gets or sets the test condition the set represents, as Voltage
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics.HBM500OhmJS001WaveformCharacteristicsSet.PeakCurrent">
+            <summary>
+            Gets or sets the allowed min (Item1) max (Item2) range of the Peak Current in Amps
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics.HBM500OhmJS001WaveformCharacteristicsSet.Clone">
+            <summary>
+            Returns a copy of this set
+            </summary>
+            <returns>A copy of this set</returns>
+        </member>
+        <member name="T:ESDWaveformVerifier.ICDMStandard">
+            <summary>
+            Interface that provides calculations for a CDM Standard
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.IsLargeTarget">
+            <summary>
+            Gets a value indicating whether the CDM target is the Large target or not (small if not)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.OscilloscopeIsHighBandwidth">
+            <summary>
+            Gets a value indicating whether the oscilloscope used is high bandwidth or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.PeakCurrentValue">
+            <summary>
+            Gets the calculated Peak Current Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.PeakCurrentDataPoint">
+            <summary>
+            Gets the calculated Peak Current DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.PeakCurrentAllowedMinimum">
+            <summary>
+            Gets the calculated Peak Current allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.PeakCurrentAllowedMaximum">
+            <summary>
+            Gets the calculated Peak Current allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.PeakCurrentIsPassing">
+            <summary>
+            Gets a value indicating whether the Peak Current Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.RiseTimeValue">
+            <summary>
+            Gets the calculated Rise Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.RiseTimeStartDataPoint">
+            <summary>
+            Gets the calculated Rise Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.RiseTimeEndDataPoint">
+            <summary>
+            Gets the calculated Rise Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.RiseTimeAllowedMinimum">
+            <summary>
+            Gets the calculated Rise Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.RiseTimeAllowedMaximum">
+            <summary>
+            Gets the calculated Rise Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.RiseTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Rise Time Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.FullWidthHalfMaxValue">
+            <summary>
+            Gets the calculated Full Width at Half Maximum Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.FullWidthHalfMaxStartDataPoint">
+            <summary>
+            Gets the calculated Full Width at Half Maximum starting DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.FullWidthHalfMaxEndDataPoint">
+            <summary>
+            Gets the calculated Full Width at Half Maximum ending DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.FullWidthHalfMaxAllowedMinimum">
+            <summary>
+            Gets the calculated Full Width at Half Maximum allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.FullWidthHalfMaxAllowedMaximum">
+            <summary>
+            Gets the calculated Full Width at Half Maximum allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.FullWidthHalfMaxIsPassing">
+            <summary>
+            Gets a value indicating whether the Full Width at Half Maximum Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.UndershootValue">
+            <summary>
+            Gets the signed Undershoot Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.UndershootDataPoint">
+            <summary>
+            Gets the signed Undershoot DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.UndershootAllowedMaximumPercent">
+            <summary>
+            Gets the Undershoot allowed maximum as a percentage
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.UndershootAllowedMaximumValue">
+            <summary>
+            Gets the Undershoot allowed maximum value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.ICDMStandard.UndershootIsPassing">
+            <summary>
+            Gets a value indicating whether the Undershoot Value is passing or not
+            </summary>
+        </member>
+        <member name="T:ESDWaveformVerifier.IHBM0OhmStandard">
+            <summary>
+            Interface that provides calculations for a HBM 0-Ohm Standard
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.PeakCurrentValue">
+            <summary>
+            Gets the calculated Peak Current (Ips) Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.PeakCurrentDataPoint">
+            <summary>
+            Gets the calculated Peak Current (Ips) DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.PeakCurrentAllowedMinimum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.PeakCurrentAllowedMaximum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.PeakCurrentIsPassing">
+            <summary>
+            Gets a value indicating whether the Peak Current (Ips) Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.RiseTimeValue">
+            <summary>
+            Gets the calculated Rise Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.RiseTimeStartDataPoint">
+            <summary>
+            Gets the calculated Rise Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.RiseTimeEndDataPoint">
+            <summary>
+            Gets the calculated Rise Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.RiseTimeAllowedMinimum">
+            <summary>
+            Gets the Rise Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.RiseTimeAllowedMaximum">
+            <summary>
+            Gets the Rise Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.RiseTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Rise Time Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.DecayTimeValue">
+            <summary>
+            Gets the calculated Decay Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.DecayTimeStartDataPoint">
+            <summary>
+            Gets the calculated Decay Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.DecayTimeEndDataPoint">
+            <summary>
+            Gets the calculated Decay Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.DecayTimeAllowedMinimum">
+            <summary>
+            Gets the calculated Decay Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.DecayTimeAllowedMaximum">
+            <summary>
+            Gets the calculated Decay Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.DecayTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Decay Time Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.TotalRingPercentValue">
+            <summary>
+            Gets the calculated Total Ring Percent Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.TotalRingAllowedMaximum">
+            <summary>
+            Gets the Total Ring allowed maximum as a %
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.TotalRingIsPassing">
+            <summary>
+            Gets a value indicating whether the Total Ring Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.Ring1PeakDataPoint">
+            <summary>
+            Gets the Ring1 peak DataPoint (maximum positive ring)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.Ring2PeakDataPoint">
+            <summary>
+            Gets the Ring2 peak DataPoint (maximum negative ring)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.AbsoluteIpsPolynomial">
+            <summary>
+            Gets the 5th Degree Polynomial that represents the Least Squares Fit line derived from Ips until Ips+40ns time of the absolute Waveform
+            </summary>
+        </member>
+        <member name="T:ESDWaveformVerifier.IHBM500OhmStandard">
+            <summary>
+            Interface that provides calculations for a HBM 500-Ohm Standard
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.PeakCurrentValue">
+            <summary>
+            Gets the calculated Peak Current (Ips) Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.PeakCurrentDataPoint">
+            <summary>
+            Gets the calculated Peak Current (Ips) DataPoint
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.PeakCurrentAllowedMinimum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.PeakCurrentAllowedMaximum">
+            <summary>
+            Gets the calculated Peak Current (Ips) allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.PeakCurrentIsPassing">
+            <summary>
+            Gets a value indicating whether the Peak Current (Ips) Value is passing or not
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.RiseTimeValue">
+            <summary>
+            Gets the calculated Rise Time Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.RiseTimeStartDataPoint">
+            <summary>
+            Gets the calculated Rise Time starting DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.RiseTimeEndDataPoint">
+            <summary>
+            Gets the calculated Rise Time ending DataPoint (interpolated)
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.RiseTimeAllowedMinimum">
+            <summary>
+            Gets the Rise Time allowed minimum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.RiseTimeAllowedMaximum">
+            <summary>
+            Gets the Rise Time allowed maximum
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM500OhmStandard.RiseTimeIsPassing">
+            <summary>
+            Gets a value indicating whether the Rise Time Value is passing or not
+            </summary>
+        </member>
+        <member name="T:ESDWaveformVerifier.IStandard">
+            <summary>
+            An interface for all Standards
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IStandard.SignedVoltage">
+            <summary>
+            Gets the signed voltage
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IStandard.Waveform">
+            <summary>
+            Gets the waveform to provide calculations on
+            </summary>
+        </member>
+        <member name="T:ESDWaveformVerifier.Standard">
+            <summary>
+            A base class for all Standards
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.Standard.absoluteWaveform">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.Standard"/> class
+            </summary>
+            <param name="waveform">The waveform to provide calculations on</param>
+            <param name="signedVoltage">The signed voltage</param>
+        </member>
+        <member name="P:ESDWaveformVerifier.Standard.SignedVoltage">
+            <summary>
+            Gets the signed voltage
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.Standard.Waveform">
+            <summary>
+            Gets the waveform to provide calculations on
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.Standard.AbsoluteWaveform">
+            <summary>
+            Gets the waveform that has been inverted if the original waveform is a negative polarity, and the original waveform if positive polarity.
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.Standard.WaveformIsPositivePolarity">
+            <summary>
+            Gets a value indicating whether the waveform is a positive polarity or not
+            </summary>
+        </member>
+    </members>
+</doc>

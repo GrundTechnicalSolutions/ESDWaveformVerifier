@@ -1,0 +1,181 @@
+﻿// ---------------------------------------------------------------------------------------------------
+//  <copyright file="HBM500OhmJS001WaveformCharacteristics.cs" company="Grund Technical Solutions, Inc">
+//      Copyright (c) Grund Technical Solutions, Inc. All rights reserved.
+//  </copyright>
+// ---------------------------------------------------------------------------------------------------
+namespace ESDWaveformVerifier.HBM500OhmJS001
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using ESDWaveformVerifier.DataTypes;
+
+    /// <summary>
+    /// A class that represents the HBM JS-001 500-Ohm Waveform Specifications as found in JS-001 - Section 5.5 - Table 1
+    /// </summary>
+    internal static class HBM500OhmJS001WaveformCharacteristics
+    {
+        /// <summary>
+        /// Private backing store for the sets of HBM JS-001 Specifications.
+        /// These are derived from JS-001 - Section 5.5 - Table 1
+        /// </summary>
+        private static List<HBM500OhmJS001WaveformCharacteristicsSet> characteristicSets = new List<HBM500OhmJS001WaveformCharacteristicsSet>()
+        {
+            new HBM500OhmJS001WaveformCharacteristicsSet()
+            {
+                TestCondition = 1000,
+                PeakCurrent = new Tuple<double, double>(0.37, 0.55),
+            },
+            new HBM500OhmJS001WaveformCharacteristicsSet()
+            {
+                TestCondition = 4000,
+                PeakCurrent = new Tuple<double, double>(1.5, 2.2),
+            },
+        };
+
+        /// <summary>
+        /// Returns the nominal (Item1), min (Item2), and max (Item3) allowed HBM Peak Current to be within JS-001 specification
+        /// </summary>
+        /// <param name="hbmVoltage">The voltage of the HBM pulse waveform (polarity is ignored, absolute value will be used)</param>
+        /// <returns>The nominal (Item1), min (Item2), and max (Item3) allowed HBM Peak Current to be within JS-001 specification</returns>
+        internal static Tuple<double, double, double> HBMPeakCurrentNominalMinMax(double hbmVoltage)
+        {
+            double absHBMVoltage = System.Math.Abs(hbmVoltage);
+
+            HBM500OhmJS001WaveformCharacteristicsSet set = HBM500OhmJS001WaveformCharacteristics.GenerateSetForHBMVoltage(absHBMVoltage);
+
+            return new Tuple<double, double, double>(
+                DoubleRangeExtensions.CenterOfRange(set.PeakCurrent.Item1, set.PeakCurrent.Item2),
+                set.PeakCurrent.Item1,
+                set.PeakCurrent.Item2);
+        }
+
+        /// <summary>
+        /// Generates a new set for the HBM voltage from the JS-001 standard
+        /// </summary>
+        /// <param name="hbmVoltage">The voltage of the HBM pulse waveform (polarity is ignored, absolute value will be used)</param>
+        /// <returns>A new set for the HBM voltage from the JS-001 standard</returns>
+        private static HBM500OhmJS001WaveformCharacteristicsSet GenerateSetForHBMVoltage(double hbmVoltage)
+        {
+            double absHBMVoltage = System.Math.Abs(hbmVoltage);
+
+            if (HBM500OhmJS001WaveformCharacteristics.characteristicSets.Any(set => set.TestCondition == absHBMVoltage))
+            {
+                // If the voltage is an exact match to a set, use it
+                return HBM500OhmJS001WaveformCharacteristics.characteristicSets.First(set => set.TestCondition == absHBMVoltage).Clone();
+            }
+            else
+            {
+                // The voltage isn't an exact match to the table, so interpolate it
+                HBM500OhmJS001WaveformCharacteristicsSet below = null;
+                HBM500OhmJS001WaveformCharacteristicsSet above = null;
+
+                // Try to find the closest sets that are below and above the Test Condition voltage
+                foreach (HBM500OhmJS001WaveformCharacteristicsSet set in HBM500OhmJS001WaveformCharacteristics.characteristicSets)
+                {
+                    if (set.TestCondition < absHBMVoltage)
+                    {
+                        if (below == null || below.TestCondition < set.TestCondition)
+                        {
+                            below = set;
+                        }
+                    }
+                    else
+                    {
+                        if (above == null || above.TestCondition > set.TestCondition)
+                        {
+                            above = set;
+                        }
+                    }
+                }
+
+                if (below != null && above != null)
+                {
+                    // Interpolate between the below and above table entries
+                    double percentWithinRange = DoubleRangeExtensions.PercentWithinRange(absHBMVoltage, above.TestCondition, below.TestCondition);
+
+                    // Only the Peak Current varies between different Test Conditions.
+                    // All other properties are constant for a given target size and bandwidth.
+                    Tuple<double, double> interpolatedPeakCurrent = new Tuple<double, double>(
+                        DoubleRangeExtensions.EquivalentValueInNewRange(percentWithinRange, 1, 0, above.PeakCurrent.Item1, below.PeakCurrent.Item1),
+                        DoubleRangeExtensions.EquivalentValueInNewRange(percentWithinRange, 1, 0, above.PeakCurrent.Item2, below.PeakCurrent.Item2));
+
+                    return new HBM500OhmJS001WaveformCharacteristicsSet()
+                    {
+                        TestCondition = absHBMVoltage,
+                        PeakCurrent = interpolatedPeakCurrent,
+                    };
+                }
+                else if (below != null)
+                {
+                    // The HBM voltage is higher than the highest table entry, so scale the largest one
+                    double multiplier = absHBMVoltage / below.TestCondition;
+
+                    // Only the Peak Current varies between different Test Conditions.
+                    // All other properties are constant for a given target size and bandwidth.
+                    Tuple<double, double> scaledPeakCurrent = new Tuple<double, double>(
+                        below.PeakCurrent.Item1 * multiplier,
+                        below.PeakCurrent.Item2 * multiplier);
+
+                    return new HBM500OhmJS001WaveformCharacteristicsSet()
+                    {
+                        TestCondition = absHBMVoltage,
+                        PeakCurrent = scaledPeakCurrent,
+                    };
+                }
+                else if (above != null)
+                {
+                    // The HBM voltage is lower than the lowest table entry, so scale the smallest one
+                    double multiplier = absHBMVoltage / above.TestCondition;
+
+                    // Only the Peak Current varies between different Test Conditions.
+                    // All other properties are constant for a given target size and bandwidth.
+                    Tuple<double, double> scaledPeakCurrent = new Tuple<double, double>(
+                        above.PeakCurrent.Item1 * multiplier,
+                        above.PeakCurrent.Item2 * multiplier);
+
+                    return new HBM500OhmJS001WaveformCharacteristicsSet()
+                    {
+                        TestCondition = absHBMVoltage,
+                        PeakCurrent = scaledPeakCurrent,
+                    };
+                }
+                else
+                {
+                    throw new InvalidOperationException("Finding table entries for the HBM voltage " + absHBMVoltage + " failed.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Class that represents the allowed characteristics of a HBM waveform for the given Test Condition.
+        /// </summary>
+        private class HBM500OhmJS001WaveformCharacteristicsSet
+        {
+            /// <summary>
+            /// Gets or sets the test condition the set represents, as Voltage
+            /// </summary>
+            public double TestCondition { get; set; }
+
+            /// <summary>
+            /// Gets or sets the allowed min (Item1) max (Item2) range of the Peak Current in Amps
+            /// </summary>
+            public Tuple<double, double> PeakCurrent { get; set; }
+
+            /// <summary>
+            /// Returns a copy of this set
+            /// </summary>
+            /// <returns>A copy of this set</returns>
+            public HBM500OhmJS001WaveformCharacteristicsSet Clone()
+            {
+                return new HBM500OhmJS001WaveformCharacteristicsSet()
+                {
+                    TestCondition = this.TestCondition,
+                    PeakCurrent = new Tuple<double, double>(this.PeakCurrent.Item1, this.PeakCurrent.Item2),
+                };
+            }
+        }
+    }
+}

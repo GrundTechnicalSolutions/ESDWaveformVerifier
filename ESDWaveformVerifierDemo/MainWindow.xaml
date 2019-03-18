@@ -1,0 +1,17 @@
+﻿<Window x:Class="ESDWaveformVerifierDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ESDWaveformVerifierDemo"
+        mc:Ignorable="d"
+        Title="ESD Waveform Verifier Demo" Height="450" Width="800">
+    <TabControl>
+        <TabItem Header="CDM JS-002">
+            <local:CDMView DataContext="{Binding Path=CDMVM}" />
+        </TabItem>
+        <TabItem Header="HBM JS-001">
+            <local:HBMView DataContext="{Binding Path=HBMVM}" />
+        </TabItem>
+    </TabControl>
+</Window>
