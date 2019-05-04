@@ -78,7 +78,7 @@ namespace ESDWaveformVerifierDemo
             if (this.OpenedWaveform != null && this.VoltageIsValid())
             {
                 return this.Is0Ohm ?
-                    (IStandard)new HBM0OhmJS001Standard(true, 0, this.OpenedWaveform, this.Voltage) :
+                    (IStandard)new HBM0OhmJS001Standard(this.OpenedWaveform, this.Voltage) :
                     (IStandard)new HBM500OhmJS001Standard(this.OpenedWaveform, this.Voltage);
             }
             else

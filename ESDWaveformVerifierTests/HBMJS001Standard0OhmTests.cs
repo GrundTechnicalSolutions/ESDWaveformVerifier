@@ -16,7 +16,7 @@ namespace ESDWaveformVerifierTests
         public void HBMJS0010OhmPositiveNoNoiseCompensationTest()
         {
             Waveform waveform = PublicStandardTestExtensions.ParseWaveformFromString(Properties.Resources.HBM_0Ohm_Pos_0500V);
-            HBM0OhmJS001Standard hbm0OhmJS001Standard = new HBM0OhmJS001Standard(false, 0, waveform, 500);
+            HBM0OhmJS001Standard hbm0OhmJS001Standard = new HBM0OhmJS001Standard(waveform, 500);
 
             // Assert that Peak Current value is within 1mA of expected
             Assert.AreEqual(0.3553, hbm0OhmJS001Standard.PeakCurrentValue, 0.001);
@@ -59,7 +59,7 @@ namespace ESDWaveformVerifierTests
         public void HBMJS0010OhmNegativeNoNoiseCompensationTest()
         {
             Waveform waveform = PublicStandardTestExtensions.ParseWaveformFromString(Properties.Resources.HBM_0Ohm_Neg_8000V);
-            HBM0OhmJS001Standard hbm0OhmJS001Standard = new HBM0OhmJS001Standard(false, 0, waveform, -8000);
+            HBM0OhmJS001Standard hbm0OhmJS001Standard = new HBM0OhmJS001Standard(waveform, -8000);
 
             // Assert that Peak Current value is within 1mA of expected
             Assert.AreEqual(-5.433, hbm0OhmJS001Standard.PeakCurrentValue, 0.001);

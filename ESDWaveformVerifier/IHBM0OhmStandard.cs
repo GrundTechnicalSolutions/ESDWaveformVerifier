@@ -18,6 +18,11 @@ namespace ESDWaveformVerifier
     public interface IHBM0OhmStandard : IStandard
     {
         /// <summary>
+        /// Gets the calculated Ips Max DataPoint
+        /// </summary>
+        DataPoint IpsMaxDataPoint { get; }
+
+        /// <summary>
         /// Gets the calculated Peak Current (Ips) Value
         /// </summary>
         double PeakCurrentValue { get; }

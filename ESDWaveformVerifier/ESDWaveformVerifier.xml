@@ -547,7 +547,7 @@
             Class that provides calculations for the HBM 0-Ohm JS-001 Standard
             </summary>
         </member>
-        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.absoluteIpsPlus40nsWaveform">
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.absoluteIpsPlusDerivationOffsetWaveform">
             <summary>
             Private backing store
             </summary>
@@ -567,18 +567,54 @@
             Private backing store
             </summary>
         </member>
-        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.#ctor(System.Boolean,System.Double,ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.peakCurrentDerivationOffsetTime">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.findDoublePeak">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.doublePeakPercentIncrease">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.doublePeakLowerPercentCutoff">
+            <summary>
+            Private backing store
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard"/> class
+            </summary>
+            <param name="waveform">The HBM 0-Ohm waveform to provide calculations on</param>
+            <param name="signedVoltage">The signed voltage</param>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.#ctor(System.Boolean,System.Double,System.Double,System.Boolean,System.Double,System.Double,ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
             <summary>
             Initializes a new instance of the <see cref="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard"/> class
             </summary>
             <param name="compensateForNoise">A value indicating whether to compensate for noise or not</param>
             <param name="compensateForNoiseCutoffTime">The time to stop measuring for noise from the beginning of the waveform</param>
+            <param name="peakCurrentDerivationOffsetTime">The amount of time after Tmax to interpolate Ips (see 5.2.3.3.1) in seconds.  Suggested is 40ns</param>
+            <param name="findDoublePeak">A value indicating whether to look for a second peak that is slightly lower than the max peak, because some testers generate this type of peak</param>
+            <param name="doublePeakPercentIncrease">The percent increase to look for when looking for a second peak.</param>
+            <param name="doublePeakLowerPercentCutoff">The lower percent cutoff below which double-peaks will not be searched for</param>
             <param name="waveform">The HBM 0-Ohm waveform to provide calculations on</param>
             <param name="signedVoltage">The signed voltage</param>
         </member>
         <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.PeakCurrentValue">
             <summary>
             Gets the calculated Peak Current (Ips) Value
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.IpsMaxDataPoint">
+            <summary>
+            Gets the Ips Max DataPoint
             </summary>
         </member>
         <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.PeakCurrentDataPoint">
@@ -688,12 +724,17 @@
         </member>
         <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.AbsoluteIpsPolynomial">
             <summary>
-            Gets the 5th Degree Polynomial that represents the Least Squares Fit line derived from Ips until Ips+40ns time of the absolute Waveform
+            Gets the 5th Degree Polynomial that represents the Least Squares Fit line derived from Ips until Ips + peak current derivation offset time of the absolute Waveform
             </summary>
         </member>
-        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.AbsoluteIpsPlus40nsWaveform">
+        <member name="P:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.AbsoluteIpsPlusPeakCurrentDerivationOffsetWaveform">
             <summary>
-            Gets an absolute Waveform gated to only Ips time until 40ns after Ips time
+            Gets an absolute Waveform gated to only Ips time until after the peak current derivation offset time
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.CalculateIpsMaxDataPoint">
+            <summary>
+            Calculates Ips Max Data Point.  This may be different depending on what the double-peak option is set to.
             </summary>
         </member>
         <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.CalculatePeakCurrent">
@@ -1017,6 +1058,11 @@
         <member name="T:ESDWaveformVerifier.IHBM0OhmStandard">
             <summary>
             Interface that provides calculations for a HBM 0-Ohm Standard
+            </summary>
+        </member>
+        <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.IpsMaxDataPoint">
+            <summary>
+            Gets the calculated Ips Max DataPoint
             </summary>
         </member>
         <member name="P:ESDWaveformVerifier.IHBM0OhmStandard.PeakCurrentValue">

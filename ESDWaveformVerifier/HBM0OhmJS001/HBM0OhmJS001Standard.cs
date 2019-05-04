@@ -20,7 +20,7 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         /// <summary>
         /// Private backing store
         /// </summary>
-        private Waveform absoluteIpsPlus40nsWaveform = null;
+        private Waveform absoluteIpsPlusDerivationOffsetWaveform = null;
 
         /// <summary>
         /// Private backing store
@@ -38,17 +38,64 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         private double compensateForNoiseCutoffTime;
 
         /// <summary>
+        /// Private backing store
+        /// </summary>
+        private double peakCurrentDerivationOffsetTime;
+
+        /// <summary>
+        /// Private backing store
+        /// </summary>
+        private bool findDoublePeak;
+
+        /// <summary>
+        /// Private backing store
+        /// </summary>
+        private double doublePeakPercentIncrease;
+
+        /// <summary>
+        /// Private backing store
+        /// </summary>
+        private double doublePeakLowerPercentCutoff;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HBM0OhmJS001Standard"/> class
+        /// </summary>
+        /// <param name="waveform">The HBM 0-Ohm waveform to provide calculations on</param>
+        /// <param name="signedVoltage">The signed voltage</param>
+        public HBM0OhmJS001Standard(Waveform waveform, double signedVoltage)
+            : this(true, 0, 0.000000040, false, 0.04, 0.85, waveform, signedVoltage)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="HBM0OhmJS001Standard"/> class
         /// </summary>
         /// <param name="compensateForNoise">A value indicating whether to compensate for noise or not</param>
         /// <param name="compensateForNoiseCutoffTime">The time to stop measuring for noise from the beginning of the waveform</param>
+        /// <param name="peakCurrentDerivationOffsetTime">The amount of time after Tmax to interpolate Ips (see 5.2.3.3.1) in seconds.  Suggested is 40ns</param>
+        /// <param name="findDoublePeak">A value indicating whether to look for a second peak that is slightly lower than the max peak, because some testers generate this type of peak</param>
+        /// <param name="doublePeakPercentIncrease">The percent increase to look for when looking for a second peak.</param>
+        /// <param name="doublePeakLowerPercentCutoff">The lower percent cutoff below which double-peaks will not be searched for</param>
         /// <param name="waveform">The HBM 0-Ohm waveform to provide calculations on</param>
         /// <param name="signedVoltage">The signed voltage</param>
-        public HBM0OhmJS001Standard(bool compensateForNoise, double compensateForNoiseCutoffTime, Waveform waveform, double signedVoltage)
+        public HBM0OhmJS001Standard(
+            bool compensateForNoise,
+            double compensateForNoiseCutoffTime,
+            double peakCurrentDerivationOffsetTime,
+            bool findDoublePeak,
+            double doublePeakPercentIncrease,
+            double doublePeakLowerPercentCutoff,
+            Waveform waveform,
+            double signedVoltage)
             : base(waveform, signedVoltage)
         {
             this.compensateForNoise = compensateForNoise;
             this.compensateForNoiseCutoffTime = compensateForNoiseCutoffTime;
+            this.peakCurrentDerivationOffsetTime = peakCurrentDerivationOffsetTime;
+            this.findDoublePeak = findDoublePeak;
+            this.doublePeakPercentIncrease = doublePeakPercentIncrease;
+            this.doublePeakLowerPercentCutoff = doublePeakLowerPercentCutoff;
+            this.CalculateIpsMaxDataPoint();
             this.CalculatePeakCurrent();
             this.CalculateRiseTime();
             this.CalculateDecayTime();
@@ -59,6 +106,15 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         /// Gets the calculated Peak Current (Ips) Value
         /// </summary>
         public double PeakCurrentValue
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the Ips Max DataPoint
+        /// </summary>
+        public DataPoint IpsMaxDataPoint
         {
             get;
             private set;
@@ -249,7 +305,7 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         }
 
         /// <summary>
-        /// Gets the 5th Degree Polynomial that represents the Least Squares Fit line derived from Ips until Ips+40ns time of the absolute Waveform
+        /// Gets the 5th Degree Polynomial that represents the Least Squares Fit line derived from Ips until Ips + peak current derivation offset time of the absolute Waveform
         /// </summary>
         public FifthDegreePolynomial AbsoluteIpsPolynomial
         {
@@ -257,7 +313,7 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
             {
                 if (this.absoluteIpsPolynomial == null)
                 {
-                    this.absoluteIpsPolynomial = this.AbsoluteIpsPlus40nsWaveform.LeastSquaresFit();
+                    this.absoluteIpsPolynomial = this.AbsoluteIpsPlusPeakCurrentDerivationOffsetWaveform.LeastSquaresFit();
                 }
 
                 return this.absoluteIpsPolynomial;
@@ -265,26 +321,66 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         }
 
         /// <summary>
-        /// Gets an absolute Waveform gated to only Ips time until 40ns after Ips time
+        /// Gets an absolute Waveform gated to only Ips time until after the peak current derivation offset time
         /// </summary>
-        private Waveform AbsoluteIpsPlus40nsWaveform
+        private Waveform AbsoluteIpsPlusPeakCurrentDerivationOffsetWaveform
         {
             get
             {
-                if (this.absoluteIpsPlus40nsWaveform == null)
+                if (this.absoluteIpsPlusDerivationOffsetWaveform == null)
                 {
                     // Calculate the (absolute) Max Current DataPoint
-                    DataPoint absoluteMaxCurrentDataPoint = this.AbsoluteWaveform.Maximum();
+                    DataPoint ipsMaxAbsoluteDataPoint = this.IpsMaxDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-                    // Find the time that is 40ns after the Ips time
-                    double after40nsTime = absoluteMaxCurrentDataPoint.X + 0.000000040;
+                    // Find the time that is after the peak current derivation offset time
+                    double afterDerivationOffsetTime = ipsMaxAbsoluteDataPoint.X + this.peakCurrentDerivationOffsetTime;
 
-                    // Gate the waveform between IpsMax and 40ns after, to be used for least-squares-fit formula
-                    this.absoluteIpsPlus40nsWaveform = this.AbsoluteWaveform.Gates(absoluteMaxCurrentDataPoint.X, after40nsTime);
+                    // Gate the waveform between IpsMax and after the peak current derivation offset time, to be used for least-squares-fit formula
+                    this.absoluteIpsPlusDerivationOffsetWaveform = this.AbsoluteWaveform.Gates(ipsMaxAbsoluteDataPoint.X, afterDerivationOffsetTime);
                 }
 
-                return this.absoluteIpsPlus40nsWaveform;
+                return this.absoluteIpsPlusDerivationOffsetWaveform;
             }
+        }
+
+        /// <summary>
+        /// Calculates Ips Max Data Point.  This may be different depending on what the double-peak option is set to.
+        /// </summary>
+        private void CalculateIpsMaxDataPoint()
+        {
+            DataPoint absIpsDataPoint = this.AbsoluteWaveform.Maximum();
+
+            if (this.findDoublePeak)
+            {
+                double mostRecentTroughPercent = 1.0;
+                DataPoint? secondIpsDataPoint = null;
+
+                foreach (DataPoint dp in this.AbsoluteWaveform.DataPoints)
+                {
+                    if (dp.X > absIpsDataPoint.X && absIpsDataPoint.Y > 0)
+                    {
+                        double dpPercentOfAbsMax = dp.Y / absIpsDataPoint.Y;
+                        if (dpPercentOfAbsMax < mostRecentTroughPercent)
+                        {
+                            mostRecentTroughPercent = System.Math.Max(dpPercentOfAbsMax, this.doublePeakLowerPercentCutoff);
+                        }
+                        else
+                        {
+                            if (dpPercentOfAbsMax - mostRecentTroughPercent > this.doublePeakPercentIncrease)
+                            {
+                                if (secondIpsDataPoint == null || secondIpsDataPoint.Value.Y < dp.Y)
+                                {
+                                    secondIpsDataPoint = dp;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                absIpsDataPoint = secondIpsDataPoint ?? absIpsDataPoint;
+            }
+
+            this.IpsMaxDataPoint = absIpsDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
         }
 
         /// <summary>
@@ -293,16 +389,16 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         private void CalculatePeakCurrent()
         {
             // Calculate the (absolute) Max Current DataPoint
-            DataPoint absoluteMaxCurrentDataPoint = this.AbsoluteWaveform.Maximum();
+            DataPoint ipsMaxAbsoluteDataPoint = this.IpsMaxDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
             // Determine Ips by evaluating the ips Polynomial at the IpsMax time
-            double ipsAbsoluteValue = this.AbsoluteIpsPolynomial.Evaluate(absoluteMaxCurrentDataPoint.X);
+            double ipsAbsoluteValue = this.AbsoluteIpsPolynomial.Evaluate(ipsMaxAbsoluteDataPoint.X);
 
             // Determine the Peak Current (Ips) value
             this.PeakCurrentValue = ipsAbsoluteValue.InvertValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
             // Create a DataPoint at the time of Ips with the Ips value
-            this.PeakCurrentDataPoint = new DataPoint(absoluteMaxCurrentDataPoint.X, this.PeakCurrentValue);
+            this.PeakCurrentDataPoint = new DataPoint(ipsMaxAbsoluteDataPoint.X, this.PeakCurrentValue);
 
             // Determine the min and max allowed values for the Peak Current to be passing
             Tuple<double, double, double> nomMinMaxPeakCurrent = HBM0OhmJS001WaveformCharacteristics.HBMPeakCurrentNominalMinMax(this.SignedVoltage);
@@ -424,7 +520,7 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
             }
 
             // Find Ring1 Data point (max positive ring)
-            this.Ring1PeakDataPoint = this.AbsoluteIpsPlus40nsWaveform.DataPointAtHBM0OhmJS001MaximumRing(this.AbsoluteIpsPolynomial, positiveLeadingEdgeNoiseValue, true);
+            this.Ring1PeakDataPoint = this.AbsoluteIpsPlusPeakCurrentDerivationOffsetWaveform.DataPointAtHBM0OhmJS001MaximumRing(this.AbsoluteIpsPolynomial, positiveLeadingEdgeNoiseValue, true);
 
             // Find Y-value of FifthDegreePolynomial at the time of Ring1
             double positiveRingLeastSquaresFitValue = this.AbsoluteIpsPolynomial.Evaluate(this.Ring1PeakDataPoint.X);
@@ -436,7 +532,7 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
             double positiveRingCurrentDifferenceAbs = System.Math.Abs(positiveRingCurrentDifference);
 
             // Find Ring2 Data point (max negative ring)
-            this.Ring2PeakDataPoint = this.AbsoluteIpsPlus40nsWaveform.DataPointAtHBM0OhmJS001MaximumRing(this.AbsoluteIpsPolynomial, negativeLeadingEdgeNoiseValue, false);
+            this.Ring2PeakDataPoint = this.AbsoluteIpsPlusPeakCurrentDerivationOffsetWaveform.DataPointAtHBM0OhmJS001MaximumRing(this.AbsoluteIpsPolynomial, negativeLeadingEdgeNoiseValue, false);
 
             // Output the Ring2 DataPoint (max negative ring)
 
