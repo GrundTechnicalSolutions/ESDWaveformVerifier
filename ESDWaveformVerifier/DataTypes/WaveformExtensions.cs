@@ -169,6 +169,31 @@ namespace ESDWaveformVerifier.DataTypes
         }
 
         /// <summary>
+        /// Returns the sampling frequency of the waveform, or 0.0 if less than two DataPoints exist
+        /// </summary>
+        /// <param name="waveform">The Waveform to find the sampling frequency of</param>
+        /// <returns>the sampling frequency of the Waveform, or 0.0 if less than two DataPoints exist</returns>
+        internal static double SamplingFrequency(this Waveform waveform)
+        {
+            if (waveform.DataPoints.Count() >= 2)
+            {
+                double sampleTime = waveform.DataPoints.ElementAt(1).X - waveform.DataPoints.ElementAt(0).X;
+                if (sampleTime > 0.0)
+                {
+                    return System.Math.Round(1.0 / sampleTime);
+                }
+                else
+                {
+                    return 0.0;
+                }
+            }
+            else
+            {
+                return 0.0;
+            }
+        }
+
+        /// <summary>
         /// Returns a new Waveform which has the Y-Axis scaled by the amount specified
         /// </summary>
         /// <param name="waveform">The original waveform.</param>

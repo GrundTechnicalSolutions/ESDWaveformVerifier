@@ -514,9 +514,28 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
             double negativeLeadingEdgeNoiseValue = 0;
             if (this.compensateForNoise)
             {
-                Waveform zeroLineBeforeTriggerWaveform = this.AbsoluteWaveform.TrimEnd(this.compensateForNoiseCutoffTime);
-                positiveLeadingEdgeNoiseValue = zeroLineBeforeTriggerWaveform.Maximum().Y;
-                negativeLeadingEdgeNoiseValue = zeroLineBeforeTriggerWaveform.Minimum().Y;
+                // (R&D experiment) A flag indicating that the noise reduction should use the peak-to-peak found in the zero line
+                bool useZeroLineStrategy = false;
+
+                // (R&D experiment) A flag indicating that the noise reduction should use a bessel-filtered waveform to remove the noise
+                bool useBesselFilterStrategy = true;
+
+                if (useZeroLineStrategy)
+                {
+                    Waveform zeroLineBeforeTriggerWaveform = this.AbsoluteWaveform.TrimEnd(this.compensateForNoiseCutoffTime);
+                    positiveLeadingEdgeNoiseValue = zeroLineBeforeTriggerWaveform.Maximum().Y;
+                    negativeLeadingEdgeNoiseValue = zeroLineBeforeTriggerWaveform.Minimum().Y;
+                }
+                else if (useBesselFilterStrategy)
+                {
+                    Waveform rawWaveform = this.AbsoluteIpsPlusPeakCurrentDerivationOffsetWaveform;
+                    Waveform besselWaveform = BesselDigitalFilter.FilterWaveform(rawWaveform);
+                    for (int i = 0; i < rawWaveform.DataPoints.Count(); i++)
+                    {
+                        positiveLeadingEdgeNoiseValue = System.Math.Max(positiveLeadingEdgeNoiseValue, rawWaveform.DataPoints.ElementAt(i).Y - besselWaveform.DataPoints.ElementAt(i).Y);
+                        negativeLeadingEdgeNoiseValue = System.Math.Min(negativeLeadingEdgeNoiseValue, rawWaveform.DataPoints.ElementAt(i).Y - besselWaveform.DataPoints.ElementAt(i).Y);
+                    }
+                }
             }
 
             // Find Ring1 Data point (max positive ring)

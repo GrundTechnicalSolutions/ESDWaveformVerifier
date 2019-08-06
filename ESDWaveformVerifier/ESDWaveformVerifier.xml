@@ -482,6 +482,13 @@
             <param name="waveform">The Waveform to find the first DataPoint with minimum Y value of</param>
             <returns>the first DataPoint with minimum Y value of the Waveform, or [0, 0] if no DataPoints exist</returns>
         </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.SamplingFrequency(ESDWaveformVerifier.DataTypes.Waveform)">
+            <summary>
+            Returns the sampling frequency of the waveform, or 0.0 if less than two DataPoints exist
+            </summary>
+            <param name="waveform">The Waveform to find the sampling frequency of</param>
+            <returns>the sampling frequency of the Waveform, or 0.0 if less than two DataPoints exist</returns>
+        </member>
         <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.ScaleVertically(ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
             <summary>
             Returns a new Waveform which has the Y-Axis scaled by the amount specified
@@ -541,6 +548,39 @@
             crossed between two data points, both adjacent data point's indexes are returned.  If no data points cross
             the threshold, an empty collection is returned.
             </returns>
+        </member>
+        <member name="F:ESDWaveformVerifier.HBM0OhmJS001.BesselDigitalFilter.samplingCoefficientSets">
+            <summary>
+            Key: [long] Sampling Frequency in Hz
+            Value:
+            Item1: [double] Coefficient A
+            Item2: [double] Coefficient B
+            Item3: [double] Coefficient C
+            Item4: [double] Coefficient D
+            Item5: [integer] Shift
+            </summary>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.BesselDigitalFilter.FilterWaveform(ESDWaveformVerifier.DataTypes.Waveform)">
+            <summary>
+            Returns a new waveform that has been filtered using the Bessel algorithm.
+            </summary>
+            <param name="waveform">The original waveform.</param>
+            <param name="samplingFrequency">The sampling frequency.</param>
+            <returns>The Bessel filtered waveform.</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.BesselDigitalFilter.GetCorrectSamplingCoefficientSet(System.Double)">
+            <summary>
+            Returns sampling coefficients.
+            </summary>
+            <param name="samplingFrequency">The sampling frequency.</param>
+            <returns>The sampling coefficients.</returns>
+            <remarks>
+            Item1: [double] Coefficient A
+            Item2: [double] Coefficient B
+            Item3: [double] Coefficient C
+            Item4: [double] Coefficient D
+            Item5: [integer] Shift
+            </remarks>
         </member>
         <member name="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard">
             <summary>
