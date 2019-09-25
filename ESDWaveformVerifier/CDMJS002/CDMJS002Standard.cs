@@ -304,31 +304,45 @@ namespace ESDWaveformVerifier.CDMJS002
             double riseTimeEndThreshold = peakCurrentAbsoluteValue * riseTimeEndPercent;
 
             // Find the first (interpolated) data point that is at the rise time end threshold (of the absolute value waveform)
-            DataPoint riseTimeEndAbsoluteDataPoint = this.AbsoluteWaveform.DataPointAtYThreshold(riseTimeEndThreshold, true);
+            DataPoint? riseTimeEndAbsoluteDataPoint = this.AbsoluteWaveform.DataPointAtYThreshold(riseTimeEndThreshold, true);
 
-            // Convert the first Rise Time Data Point to the signed value
-            this.RiseTimeEndDataPoint = riseTimeEndAbsoluteDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+            if (riseTimeEndAbsoluteDataPoint.HasValue)
+            {
+                // Convert the first Rise Time Data Point to the signed value
+                this.RiseTimeEndDataPoint = riseTimeEndAbsoluteDataPoint.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-            // Trim the waveform, removing everything after the Rise Time End Time
-            Waveform absoluteWaveformUntilRiseTimeEnd = this.AbsoluteWaveform.TrimEnd(this.RiseTimeEndDataPoint.X);
+                // Trim the waveform, removing everything after the Rise Time End Time
+                Waveform absoluteWaveformUntilRiseTimeEnd = this.AbsoluteWaveform.TrimEnd(this.RiseTimeEndDataPoint.X);
 
-            // Calculate what the Rise Time Start Threshold is (a percentage of peak current)
-            double riseTimeStartThreshold = peakCurrentAbsoluteValue * riseTimeStartPercent;
+                // Calculate what the Rise Time Start Threshold is (a percentage of peak current)
+                double riseTimeStartThreshold = peakCurrentAbsoluteValue * riseTimeStartPercent;
 
-            // Find the last Data Point (interpolated) Data Point that is below the Rise Time Start Threshold (of the absolute trimmed waveform)
-            DataPoint riseTimeStartAbsoluteDataPoint = absoluteWaveformUntilRiseTimeEnd.DataPointAtYThreshold(riseTimeStartThreshold, false);
+                // Find the last Data Point (interpolated) Data Point that is below the Rise Time Start Threshold (of the absolute trimmed waveform)
+                DataPoint? riseTimeStartAbsoluteDataPoint = absoluteWaveformUntilRiseTimeEnd.DataPointAtYThreshold(riseTimeStartThreshold, false);
 
-            // Convert the last Rise Time Data Point to the signed value
-            this.RiseTimeStartDataPoint = riseTimeStartAbsoluteDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+                if (riseTimeStartAbsoluteDataPoint.HasValue)
+                {
+                    // Convert the last Rise Time Data Point to the signed value
+                    this.RiseTimeStartDataPoint = riseTimeStartAbsoluteDataPoint.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-            // Find the Rise Time
-            this.RiseTimeValue = this.RiseTimeEndDataPoint.X - this.RiseTimeStartDataPoint.X;
+                    // Find the Rise Time
+                    this.RiseTimeValue = this.RiseTimeEndDataPoint.X - this.RiseTimeStartDataPoint.X;
 
-            // Determine the max allowed Rise Time to be passing
-            this.RiseTimeAllowedMaximum = CDMJS002WaveformCharacteristics.RiseTimeMax(this.SignedVoltage, this.IsLargeTarget, this.OscilloscopeIsHighBandwidth);
+                    // Determine the max allowed Rise Time to be passing
+                    this.RiseTimeAllowedMaximum = CDMJS002WaveformCharacteristics.RiseTimeMax(this.SignedVoltage, this.IsLargeTarget, this.OscilloscopeIsHighBandwidth);
 
-            // Determine if the Rise Time is passing
-            this.RiseTimeIsPassing = this.RiseTimeValue <= this.RiseTimeAllowedMaximum;
+                    // Determine if the Rise Time is passing
+                    this.RiseTimeIsPassing = this.RiseTimeValue <= this.RiseTimeAllowedMaximum;
+                }
+                else
+                {
+                    // Risetime start data point could not be found, no calculations could be made.
+                }
+            }
+            else
+            {
+                // Risetime end data point could not be found, no calculations could be made.
+            }
         }
 
         /// <summary>
@@ -347,30 +361,44 @@ namespace ESDWaveformVerifier.CDMJS002
             double fullWidthHalfMaxCurrentAbsolute = fullWidthHalfMaxCurrentSigned.InvertValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
             // Find the first (interpolated) data point that is on the rising edge of the initial spike (of the absolute value waveform)
-            DataPoint fullWidthHalfMaxRisingAbsoluteDataPoint = this.AbsoluteWaveform.DataPointAtYThreshold(fullWidthHalfMaxCurrentAbsolute, true);
+            DataPoint? fullWidthHalfMaxRisingAbsoluteDataPoint = this.AbsoluteWaveform.DataPointAtYThreshold(fullWidthHalfMaxCurrentAbsolute, true);
 
-            // Convert the rising data point to the signed value
-            this.FullWidthHalfMaxStartDataPoint = fullWidthHalfMaxRisingAbsoluteDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+            if (fullWidthHalfMaxRisingAbsoluteDataPoint.HasValue)
+            {
+                // Convert the rising data point to the signed value
+                this.FullWidthHalfMaxStartDataPoint = fullWidthHalfMaxRisingAbsoluteDataPoint.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-            // Trim the waveform, removing everything before the max peak
-            Waveform absoluteWaveformAfterPeakCurrentTime = this.AbsoluteWaveform.TrimStart(this.PeakCurrentDataPoint.X);
+                // Trim the waveform, removing everything before the max peak
+                Waveform absoluteWaveformAfterPeakCurrentTime = this.AbsoluteWaveform.TrimStart(this.PeakCurrentDataPoint.X);
 
-            // Find the first (interpolated) data point that is on the falling edge of the initial spike (of the absolute value waveform)
-            DataPoint fullWidthHalfMaxFallingDataPointAbsolute = absoluteWaveformAfterPeakCurrentTime.DataPointAtYThreshold(fullWidthHalfMaxCurrentAbsolute, true);
+                // Find the first (interpolated) data point that is on the falling edge of the initial spike (of the absolute value waveform)
+                DataPoint? fullWidthHalfMaxFallingDataPointAbsolute = absoluteWaveformAfterPeakCurrentTime.DataPointAtYThreshold(fullWidthHalfMaxCurrentAbsolute, true);
 
-            // Convert the falling data point to the signed value
-            this.FullWidthHalfMaxEndDataPoint = fullWidthHalfMaxFallingDataPointAbsolute.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+                if (fullWidthHalfMaxFallingDataPointAbsolute.HasValue)
+                {
+                    // Convert the falling data point to the signed value
+                    this.FullWidthHalfMaxEndDataPoint = fullWidthHalfMaxFallingDataPointAbsolute.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-            // Find the full width half max time
-            this.FullWidthHalfMaxValue = this.FullWidthHalfMaxEndDataPoint.X - this.FullWidthHalfMaxStartDataPoint.X;
+                    // Find the full width half max time
+                    this.FullWidthHalfMaxValue = this.FullWidthHalfMaxEndDataPoint.X - this.FullWidthHalfMaxStartDataPoint.X;
 
-            // Determine the min and max values for the Full Width Half Max to be passing
-            Tuple<double, double, double> nomMinMaxFullWidthHalfMax = CDMJS002WaveformCharacteristics.FullWidthHalfMaxNominalMinMax(this.SignedVoltage, this.IsLargeTarget, this.OscilloscopeIsHighBandwidth);
-            this.FullWidthHalfMaxAllowedMinimum = nomMinMaxFullWidthHalfMax.Item2;
-            this.FullWidthHalfMaxAllowedMaximum = nomMinMaxFullWidthHalfMax.Item3;
+                    // Determine the min and max values for the Full Width Half Max to be passing
+                    Tuple<double, double, double> nomMinMaxFullWidthHalfMax = CDMJS002WaveformCharacteristics.FullWidthHalfMaxNominalMinMax(this.SignedVoltage, this.IsLargeTarget, this.OscilloscopeIsHighBandwidth);
+                    this.FullWidthHalfMaxAllowedMinimum = nomMinMaxFullWidthHalfMax.Item2;
+                    this.FullWidthHalfMaxAllowedMaximum = nomMinMaxFullWidthHalfMax.Item3;
 
-            // Determine if the Full Width Half Max is passing
-            this.FullWidthHalfMaxIsPassing = DoubleRangeExtensions.BetweenInclusive(this.FullWidthHalfMaxAllowedMinimum, this.FullWidthHalfMaxAllowedMaximum, this.FullWidthHalfMaxValue);
+                    // Determine if the Full Width Half Max is passing
+                    this.FullWidthHalfMaxIsPassing = DoubleRangeExtensions.BetweenInclusive(this.FullWidthHalfMaxAllowedMinimum, this.FullWidthHalfMaxAllowedMaximum, this.FullWidthHalfMaxValue);
+                }
+                else
+                {
+                    // Full Width Half Max falling data point could not be found, no calculations could be made.
+                }
+            }
+            else
+            {
+                // Full Width Half Max rising data point could not be found, no calculations could be made.
+            }
         }
 
         /// <summary>

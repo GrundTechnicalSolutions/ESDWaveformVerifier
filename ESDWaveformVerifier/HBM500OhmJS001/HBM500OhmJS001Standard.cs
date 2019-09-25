@@ -178,28 +178,42 @@ namespace ESDWaveformVerifier.HBM500OhmJS001
             double riseTimeEndThreshold = peakCurrentAbsoluteValue * riseTimeEndPercent;
 
             // Find the first (interpolated) data point that is at the rise time end threshold (of the absolute value waveform)
-            DataPoint riseTimeEndAbsoluteDataPoint = this.AbsoluteWaveform.DataPointAtYThreshold(riseTimeEndThreshold, true);
+            DataPoint? riseTimeEndAbsoluteDataPoint = this.AbsoluteWaveform.DataPointAtYThreshold(riseTimeEndThreshold, true);
 
-            // Convert the first Rise Time Data Point to the signed value
-            this.RiseTimeEndDataPoint = riseTimeEndAbsoluteDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+            if (riseTimeEndAbsoluteDataPoint.HasValue)
+            {
+                // Convert the first Rise Time Data Point to the signed value
+                this.RiseTimeEndDataPoint = riseTimeEndAbsoluteDataPoint.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-            // Trim the waveform, removing everything after the Rise Time End Time
-            Waveform absoluteWaveformUntilRiseTimeEnd = this.AbsoluteWaveform.TrimEnd(this.RiseTimeEndDataPoint.X);
+                // Trim the waveform, removing everything after the Rise Time End Time
+                Waveform absoluteWaveformUntilRiseTimeEnd = this.AbsoluteWaveform.TrimEnd(this.RiseTimeEndDataPoint.X);
 
-            // Calculate what the Rise Time Start Threshold is (a percentage of peak current)
-            double riseTimeStartThreshold = peakCurrentAbsoluteValue * riseTimeStartPercent;
+                // Calculate what the Rise Time Start Threshold is (a percentage of peak current)
+                double riseTimeStartThreshold = peakCurrentAbsoluteValue * riseTimeStartPercent;
 
-            // Find the last Data Point (interpolated) Data Point that is below the Rise Time Start Threshold (of the absolute trimmed waveform)
-            DataPoint riseTimeStartAbsoluteDataPoint = absoluteWaveformUntilRiseTimeEnd.DataPointAtYThreshold(riseTimeStartThreshold, false);
+                // Find the last Data Point (interpolated) Data Point that is below the Rise Time Start Threshold (of the absolute trimmed waveform)
+                DataPoint? riseTimeStartAbsoluteDataPoint = absoluteWaveformUntilRiseTimeEnd.DataPointAtYThreshold(riseTimeStartThreshold, false);
 
-            // Convert the last Rise Time Data Point to the signed value
-            this.RiseTimeStartDataPoint = riseTimeStartAbsoluteDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+                if (riseTimeStartAbsoluteDataPoint.HasValue)
+                {
+                    // Convert the last Rise Time Data Point to the signed value
+                    this.RiseTimeStartDataPoint = riseTimeStartAbsoluteDataPoint.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-            // Find the Rise Time
-            this.RiseTimeValue = this.RiseTimeEndDataPoint.X - this.RiseTimeStartDataPoint.X;
+                    // Find the Rise Time
+                    this.RiseTimeValue = this.RiseTimeEndDataPoint.X - this.RiseTimeStartDataPoint.X;
 
-            // Determine if the Rise Time is passing
-            this.RiseTimeIsPassing = DoubleRangeExtensions.BetweenInclusive(this.RiseTimeAllowedMinimum, this.RiseTimeAllowedMaximum, this.RiseTimeValue);
+                    // Determine if the Rise Time is passing
+                    this.RiseTimeIsPassing = DoubleRangeExtensions.BetweenInclusive(this.RiseTimeAllowedMinimum, this.RiseTimeAllowedMaximum, this.RiseTimeValue);
+                }
+                else
+                {
+                    // Risetime start data point could not be found, no calculations could be made.
+                }
+            }
+            else
+            {
+                // Risetime end data point could not be found, no calculations could be made.
+            }
         }
     }
 }

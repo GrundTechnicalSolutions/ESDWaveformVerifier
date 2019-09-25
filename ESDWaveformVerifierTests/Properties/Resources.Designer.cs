@@ -19,7 +19,7 @@ namespace ESDWaveformVerifierTests.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -251,6 +251,35 @@ namespace ESDWaveformVerifierTests.Properties {
         internal static string HBM_0Ohm_Pos_0500V {
             get {
                 return ResourceManager.GetString("HBM_0Ohm_Pos_0500V", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -0.0000000148,-0.000662
+        ///-0.0000000146,0.000088
+        ///-0.0000000144,-0.000162
+        ///-0.0000000142,-0.000724
+        ///-0.0000000140,-0.001100
+        ///-0.0000000138,-0.000631
+        ///-0.0000000136,-0.000349
+        ///-0.0000000134,-0.000474
+        ///-0.0000000132,-0.000162
+        ///-0.0000000130,0.000369
+        ///-0.0000000128,0.000463
+        ///-0.0000000126,-0.000287
+        ///-0.0000000124,-0.001350
+        ///-0.0000000122,-0.002320
+        ///-0.0000000120,-0.002040
+        ///-0.0000000118,-0.001380
+        ///-0.0000000116,-0.001040
+        ///-0.0000000114,-0.001470
+        ///-0.0000000112,-0.002190
+        ///-0.0000000110,-0.002410
+        ///-0.0000000108,- [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HBM_0Ohm_Pos_2500V_DecayMissing {
+            get {
+                return ResourceManager.GetString("HBM_0Ohm_Pos_2500V_DecayMissing", resourceCulture);
             }
         }
         

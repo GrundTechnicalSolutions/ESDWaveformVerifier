@@ -71,6 +71,7 @@
     <None Include="Resources\CDM_Small_Pos_1000V_PosUndershoot.csv" />
     <None Include="Resources\HBM_0Ohm_Neg_8000V.csv" />
     <None Include="Resources\HBM_0Ohm_Pos_0500V.csv" />
+    <None Include="Resources\HBM_0Ohm_Pos_2500V_DecayMissing.csv" />
     <None Include="Resources\HBM_500Ohm_Neg_4000V.csv" />
     <None Include="Resources\HBM_500Ohm_Pos_1000V.csv" />
   </ItemGroup>

@@ -177,7 +177,7 @@ namespace ESDWaveformVerifier.DataTypes
         {
             if (waveform.DataPoints.Count() >= 2)
             {
-                double sampleTime = waveform.DataPoints.ElementAt(1).X - waveform.DataPoints.ElementAt(0).X;
+                double sampleTime = waveform.SamplingTime();
                 if (sampleTime > 0.0)
                 {
                     return System.Math.Round(1.0 / sampleTime);
@@ -186,6 +186,36 @@ namespace ESDWaveformVerifier.DataTypes
                 {
                     return 0.0;
                 }
+            }
+            else
+            {
+                return 0.0;
+            }
+        }
+
+        /// <summary>
+        /// Returns the sampling time between each data point, or 0.0 if less than two DataPoints exist
+        /// </summary>
+        /// <param name="waveform">The Waveform to find the sampling time of</param>
+        /// <returns>the sampling time between each data point, or 0.0 if less than two DataPoints exist</returns>
+        internal static double SamplingTime(this Waveform waveform)
+        {
+            if (waveform.DataPoints.Count() >= 2)
+            {
+                int upperBound = 1;
+                double firstDPTime = waveform.DataPoints.ElementAt(0).X;
+                double lastDPTime = firstDPTime;
+                do
+                {
+                    if (waveform.DataPoints.Count() > upperBound)
+                    {
+                        lastDPTime = waveform.DataPoints.ElementAt(upperBound).X;
+                    }
+
+                    upperBound++;
+                } while (firstDPTime == lastDPTime && upperBound < waveform.DataPoints.Count());
+
+                return (lastDPTime / firstDPTime) / (double)upperBound;
             }
             else
             {
@@ -213,11 +243,11 @@ namespace ESDWaveformVerifier.DataTypes
         /// <param name="yThreshold">The Y-value threshold to find the first data point crossing</param>
         /// <param name="findFirstThreshold">A value indicating whether the first threshold crossing should be returned (false will return the last)</param>
         /// <returns>the DataPoint at the Y-value threshold (could be interpolated), or [0, 0] if never crossed</returns>
-        internal static DataPoint DataPointAtYThreshold(this Waveform waveform, double yThreshold, bool findFirstThreshold)
+        internal static DataPoint? DataPointAtYThreshold(this Waveform waveform, double yThreshold, bool findFirstThreshold)
         {
             if (!waveform.DataPoints.Any())
             {
-                return new DataPoint(0, 0);
+                return null;
             }
 
             IEnumerable<int> thresholdCrossingIndexes = waveform.ThresholdCrossingIndexes(yThreshold, findFirstThreshold);
@@ -238,8 +268,7 @@ namespace ESDWaveformVerifier.DataTypes
             }
             else
             {
-                // No data point Y-values were at or crossed the threshold
-                return new DataPoint(0, 0);
+                return null;
             }
         }
 

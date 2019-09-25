@@ -47,7 +47,8 @@ namespace ESDWaveformVerifier.DataTypes
             double newRange = newRangeMax - newRangeMin;
             if (newRange == 0)
             {
-                throw new ArgumentOutOfRangeException("New range cannot be 0");
+                // The new range is zero
+                return newRangeMax;
             }
 
             double newValue = (((origValue - origRangeMin) * newRange) / origRange) + newRangeMin;

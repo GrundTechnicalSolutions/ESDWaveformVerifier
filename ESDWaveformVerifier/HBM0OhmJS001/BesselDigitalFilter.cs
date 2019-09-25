@@ -1,11 +1,20 @@
-﻿using ESDWaveformVerifier.DataTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// ---------------------------------------------------------------------------------------------------
+//  <copyright file="BesselDigitalFilter.cs" company="Grund Technical Solutions, Inc">
+//      Copyright (c) Grund Technical Solutions, Inc. All rights reserved.
+//  </copyright>
+// ---------------------------------------------------------------------------------------------------
 
 namespace ESDWaveformVerifier.HBM0OhmJS001
 {
+    using ESDWaveformVerifier.DataTypes;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    /// <summary>
+    /// A class that provides filtering calculations using the Bessel algorithm.
+    /// </summary>
     internal static class BesselDigitalFilter
     {
         /// <summary>
@@ -33,7 +42,6 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         /// Returns a new waveform that has been filtered using the Bessel algorithm.
         /// </summary>
         /// <param name="waveform">The original waveform.</param>
-        /// <param name="samplingFrequency">The sampling frequency.</param>
         /// <returns>The Bessel filtered waveform.</returns>
         internal static Waveform FilterWaveform(Waveform waveform)
         {
