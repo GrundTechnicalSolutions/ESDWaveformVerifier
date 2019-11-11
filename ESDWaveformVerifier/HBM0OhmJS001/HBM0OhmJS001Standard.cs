@@ -506,43 +506,50 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
                 // Gate the waveform to just the area for the noise-reducing exponential fit waveform
                 Waveform absoluteWaveformDecayingRegion = this.AbsoluteWaveform.Gates(expFitStartTimeThreshold, expFitEndTimeThreshold);
 
-                // Find the exponential fit constants of the waveform from 0.5 * Ips to 0.3 * Ips to eliminate noise
-                Tuple<double, double> expFitAbsoluteWaveformDecayingRegionConstants = absoluteWaveformDecayingRegion.ExponentialFit();
-
-                // Create time values that go out far enough to ensure the decay time end threshold can be found
-                List<double> timeValues = (from dp in absoluteWaveformDecayingRegion.DataPoints select dp.X).ToList();
-                double samplingTime = absoluteWaveformDecayingRegion.SamplingTime();
-                while (timeValues.Last() < 0.000000800 && samplingTime > 0)
+                if (absoluteWaveformDecayingRegion.DataPoints.Any())
                 {
-                    timeValues.Add(timeValues.Last() + samplingTime);
-                }
+                    // Find the exponential fit constants of the waveform from 0.5 * Ips to 0.3 * Ips to eliminate noise
+                    Tuple<double, double> expFitAbsoluteWaveformDecayingRegionConstants = absoluteWaveformDecayingRegion.ExponentialFit();
 
-                // Create the exponential fit equivalent waveform which has noise eliminated
-                Waveform expFitAbsoluteWaveformDecayingRegion = WaveformExtensions.CreateExponentialFitWaveform(
-                    expFitAbsoluteWaveformDecayingRegionConstants.Item1,
-                    expFitAbsoluteWaveformDecayingRegionConstants.Item2,
-                    timeValues);
+                    // Create time values that go out far enough to ensure the decay time end threshold can be found
+                    List<double> timeValues = (from dp in absoluteWaveformDecayingRegion.DataPoints select dp.X).ToList();
+                    double samplingTime = absoluteWaveformDecayingRegion.SamplingTime();
+                    while (timeValues.Last() < 0.000000800 && samplingTime > 0)
+                    {
+                        timeValues.Add(timeValues.Last() + samplingTime);
+                    }
 
-                // Calculate what the decay time end threshold is (1/e % of Ips)
-                double decayTimeEndThreshold = System.Math.Abs(this.PeakCurrentValue) * decayTimeEndPercentOfIps;
+                    // Create the exponential fit equivalent waveform which has noise eliminated
+                    Waveform expFitAbsoluteWaveformDecayingRegion = WaveformExtensions.CreateExponentialFitWaveform(
+                        expFitAbsoluteWaveformDecayingRegionConstants.Item1,
+                        expFitAbsoluteWaveformDecayingRegionConstants.Item2,
+                        timeValues);
 
-                // Find the first (interpolated) data point that is at 1/e % of Ips value (of the absolute value waveform)
-                DataPoint? decayTimeEndDataPointAbsolute = expFitAbsoluteWaveformDecayingRegion.DataPointAtYThreshold(decayTimeEndThreshold, true);
+                    // Calculate what the decay time end threshold is (1/e % of Ips)
+                    double decayTimeEndThreshold = System.Math.Abs(this.PeakCurrentValue) * decayTimeEndPercentOfIps;
 
-                if (decayTimeEndDataPointAbsolute.HasValue)
-                {
-                    // Convert the Decay Time end DataPoint to the signed value
-                    this.DecayTimeEndDataPoint = decayTimeEndDataPointAbsolute.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+                    // Find the first (interpolated) data point that is at 1/e % of Ips value (of the absolute value waveform)
+                    DataPoint? decayTimeEndDataPointAbsolute = expFitAbsoluteWaveformDecayingRegion.DataPointAtYThreshold(decayTimeEndThreshold, true);
 
-                    // Calculate the Decay Time
-                    this.DecayTimeValue = this.DecayTimeEndDataPoint.X - this.PeakCurrentDataPoint.X;
+                    if (decayTimeEndDataPointAbsolute.HasValue)
+                    {
+                        // Convert the Decay Time end DataPoint to the signed value
+                        this.DecayTimeEndDataPoint = decayTimeEndDataPointAbsolute.Value.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
 
-                    // Determine if the Decay Time is passing
-                    this.DecayTimeIsPassing = DoubleRangeExtensions.BetweenInclusive(this.DecayTimeAllowedMinimum, this.DecayTimeAllowedMaximum, this.DecayTimeValue);
+                        // Calculate the Decay Time
+                        this.DecayTimeValue = this.DecayTimeEndDataPoint.X - this.PeakCurrentDataPoint.X;
+
+                        // Determine if the Decay Time is passing
+                        this.DecayTimeIsPassing = DoubleRangeExtensions.BetweenInclusive(this.DecayTimeAllowedMinimum, this.DecayTimeAllowedMaximum, this.DecayTimeValue);
+                    }
+                    else
+                    {
+                        // The derived exponential fit waveform didn't go out to a far enough time to capture the 1/e time.
+                    }
                 }
                 else
                 {
-                    // The derived exponential fit waveform didn't go out to a far enough time to capture the 1/e time.
+                    // Could not find any data points in the decay time window.  Likely due to a malformed waveform.
                 }
             }
             else
