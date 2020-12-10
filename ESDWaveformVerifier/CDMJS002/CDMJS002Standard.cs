@@ -24,14 +24,37 @@ namespace ESDWaveformVerifier.CDMJS002
         /// <param name="signedVoltage">The signed voltage</param>
         /// <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
         /// <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
-        public CDMJS002Standard(Waveform waveform, double signedVoltage, bool isLargeTarget, bool oscilloscopeIsHighBandwidth)
+        public CDMJS002Standard(
+            Waveform waveform,
+            double signedVoltage,
+            bool isLargeTarget,
+            bool oscilloscopeIsHighBandwidth)
+            : this(waveform, signedVoltage, isLargeTarget, oscilloscopeIsHighBandwidth, 0.1, 0.9)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CDMJS002Standard"/> class
+        /// </summary>
+        /// <param name="waveform">The CDM waveform to provide calculations on</param>
+        /// <param name="signedVoltage">The signed voltage</param>
+        /// <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
+        /// <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
+        /// <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+        /// <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
+        public CDMJS002Standard(
+            Waveform waveform,
+            double signedVoltage,
+            bool isLargeTarget,
+            bool oscilloscopeIsHighBandwidth,
+            double riseTimeStartPercent,
+            double riseTimeEndPercent)
             : base(waveform, signedVoltage)
         {
             this.IsLargeTarget = isLargeTarget;
             this.OscilloscopeIsHighBandwidth = oscilloscopeIsHighBandwidth;
 
             this.CalculatePeakCurrent();
-            this.CalculateRiseTime();
+            this.CalculateRiseTime(riseTimeStartPercent, riseTimeEndPercent);
             this.CalculateFullWidthAtHalfMax();
             this.CalculateUndershoot();
         }
@@ -278,9 +301,9 @@ namespace ESDWaveformVerifier.CDMJS002
         /// <summary>
         /// Calculates the Rise Time related values
         /// </summary>
-        /// <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
-        /// <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
-        private void CalculateRiseTime(double riseTimeStartPercent = 0.1, double riseTimeEndPercent = 0.9)
+        /// <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+        /// <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
+        private void CalculateRiseTime(double riseTimeStartPercent, double riseTimeEndPercent)
         {
             if (riseTimeStartPercent < 0.0 || riseTimeStartPercent >= 1.0)
             {

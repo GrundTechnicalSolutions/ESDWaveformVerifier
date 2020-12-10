@@ -18,6 +18,17 @@
             <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
             <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
         </member>
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Boolean,System.Boolean,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.CDMJS002.CDMJS002Standard"/> class
+            </summary>
+            <param name="waveform">The CDM waveform to provide calculations on</param>
+            <param name="signedVoltage">The signed voltage</param>
+            <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
+            <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
+            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
+        </member>
         <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.IsLargeTarget">
             <summary>
             Gets a value indicating whether the CDM target is the Large target or not (small if not)
@@ -147,8 +158,8 @@
             <summary>
             Calculates the Rise Time related values
             </summary>
-            <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
-            <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
+            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
         </member>
         <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculateFullWidthAtHalfMax(System.Double)">
             <summary>
@@ -645,12 +656,14 @@
             <param name="waveform">The HBM 0-Ohm waveform to provide calculations on</param>
             <param name="signedVoltage">The signed voltage</param>
         </member>
-        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.#ctor(System.Boolean,System.Double,System.Double,System.Boolean,System.Double,System.Double,ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
+        <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.#ctor(System.Boolean,System.Double,System.Double,System.Double,System.Double,System.Boolean,System.Double,System.Double,ESDWaveformVerifier.DataTypes.Waveform,System.Double)">
             <summary>
             Initializes a new instance of the <see cref="T:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard"/> class
             </summary>
             <param name="compensateForNoise">A value indicating whether to compensate for noise or not</param>
             <param name="compensateForNoiseCutoffTime">The time to stop measuring for noise from the beginning of the waveform</param>
+            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
             <param name="peakCurrentDerivationOffsetTime">The amount of time after Tmax to interpolate Ips (see 5.2.3.3.1) in seconds.  Suggested is 40ns</param>
             <param name="findDoublePeak">A value indicating whether to look for a second peak that is slightly lower than the max peak, because some testers generate this type of peak</param>
             <param name="doublePeakPercentIncrease">The percent increase to look for when looking for a second peak.</param>
@@ -797,8 +810,8 @@
             <summary>
             Calculates the Rise Time related values
             </summary>
-            <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
-            <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
+            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
         </member>
         <member name="M:ESDWaveformVerifier.HBM0OhmJS001.HBM0OhmJS001Standard.CalculateDecayTime">
             <summary>
@@ -868,6 +881,15 @@
             <param name="waveform">The HBM 500-Ohm waveform to provide calculations on</param>
             <param name="signedVoltage">The signed voltage</param>
         </member>
+        <member name="M:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard"/> class
+            </summary>
+            <param name="waveform">The HBM 500-Ohm waveform to provide calculations on</param>
+            <param name="signedVoltage">The signed voltage</param>
+            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
+        </member>
         <member name="P:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001Standard.PeakCurrentValue">
             <summary>
             Gets the calculated Peak Current (Ips) Value
@@ -932,8 +954,8 @@
             <summary>
             Calculates the Rise Time related values
             </summary>
-            <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
-            <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
+            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
         </member>
         <member name="T:ESDWaveformVerifier.HBM500OhmJS001.HBM500OhmJS001WaveformCharacteristics">
             <summary>

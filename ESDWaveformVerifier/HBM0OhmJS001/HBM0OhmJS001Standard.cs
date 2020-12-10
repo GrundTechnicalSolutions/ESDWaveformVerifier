@@ -63,15 +63,16 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         /// <param name="waveform">The HBM 0-Ohm waveform to provide calculations on</param>
         /// <param name="signedVoltage">The signed voltage</param>
         public HBM0OhmJS001Standard(Waveform waveform, double signedVoltage)
-            : this(true, 0, 0.000000055, false, 0.04, 0.85, waveform, signedVoltage)
-        {
-        }
+            : this(true, 0, 0.1, 0.9, 0.000000055, false, 0.04, 0.85, waveform, signedVoltage)
+        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HBM0OhmJS001Standard"/> class
         /// </summary>
         /// <param name="compensateForNoise">A value indicating whether to compensate for noise or not</param>
         /// <param name="compensateForNoiseCutoffTime">The time to stop measuring for noise from the beginning of the waveform</param>
+        /// <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+        /// <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
         /// <param name="peakCurrentDerivationOffsetTime">The amount of time after Tmax to interpolate Ips (see 5.2.3.3.1) in seconds.  Suggested is 40ns</param>
         /// <param name="findDoublePeak">A value indicating whether to look for a second peak that is slightly lower than the max peak, because some testers generate this type of peak</param>
         /// <param name="doublePeakPercentIncrease">The percent increase to look for when looking for a second peak.</param>
@@ -81,6 +82,8 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         public HBM0OhmJS001Standard(
             bool compensateForNoise,
             double compensateForNoiseCutoffTime,
+            double riseTimeStartPercent,
+            double riseTimeEndPercent,
             double peakCurrentDerivationOffsetTime,
             bool findDoublePeak,
             double doublePeakPercentIncrease,
@@ -97,7 +100,7 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
             this.doublePeakLowerPercentCutoff = doublePeakLowerPercentCutoff;
             this.CalculateIpsMaxDataPoint();
             this.CalculatePeakCurrent();
-            this.CalculateRiseTime();
+            this.CalculateRiseTime(riseTimeStartPercent, riseTimeEndPercent);
             this.CalculateDecayTime();
             this.CalculateRing();
         }
@@ -412,9 +415,9 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
         /// <summary>
         /// Calculates the Rise Time related values
         /// </summary>
-        /// <param name="riseTimeStartPercent">(Optional) The Rise Time starting percentage (Default: 90%)</param>
-        /// <param name="riseTimeEndPercent">(Optional) The Rise Time ending percentage (Default: 10%)</param>
-        private void CalculateRiseTime(double riseTimeStartPercent = 0.1, double riseTimeEndPercent = 0.9)
+        /// <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
+        /// <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
+        private void CalculateRiseTime(double riseTimeStartPercent, double riseTimeEndPercent)
         {
             if (riseTimeStartPercent < 0.0 || riseTimeStartPercent >= 1.0)
             {
