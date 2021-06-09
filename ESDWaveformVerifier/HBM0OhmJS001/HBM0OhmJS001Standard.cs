@@ -571,10 +571,10 @@ namespace ESDWaveformVerifier.HBM0OhmJS001
             if (this.compensateForNoise)
             {
                 // (R&D experiment) A flag indicating that the noise reduction should use the peak-to-peak found in the zero line
-                bool useZeroLineStrategy = false;
+                bool useZeroLineStrategy = true;
 
                 // (R&D experiment) A flag indicating that the noise reduction should use a bessel-filtered waveform to remove the noise
-                bool useBesselFilterStrategy = true;
+                bool useBesselFilterStrategy = false;
 
                 if (useZeroLineStrategy)
                 {
