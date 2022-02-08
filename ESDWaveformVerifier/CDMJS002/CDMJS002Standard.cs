@@ -29,7 +29,7 @@ namespace ESDWaveformVerifier.CDMJS002
             double signedVoltage,
             bool isLargeTarget,
             bool oscilloscopeIsHighBandwidth)
-            : this(waveform, signedVoltage, isLargeTarget, oscilloscopeIsHighBandwidth, 0.1, 0.9)
+            : this(waveform, signedVoltage, isLargeTarget, oscilloscopeIsHighBandwidth, 0.1, 0.9, 0)
         { }
 
         /// <summary>
@@ -39,21 +39,23 @@ namespace ESDWaveformVerifier.CDMJS002
         /// <param name="signedVoltage">The signed voltage</param>
         /// <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
         /// <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
-        /// <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
-        /// <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
+        /// <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 10%)</param>
+        /// <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 90%)</param>
+        /// <param name="pointsAroundPeakToAverage">Number of points around the absolute peak to average together (Default: 0)</param>
         public CDMJS002Standard(
             Waveform waveform,
             double signedVoltage,
             bool isLargeTarget,
             bool oscilloscopeIsHighBandwidth,
             double riseTimeStartPercent,
-            double riseTimeEndPercent)
+            double riseTimeEndPercent,
+            int pointsAroundPeakToAverage)
             : base(waveform, signedVoltage)
         {
             this.IsLargeTarget = isLargeTarget;
             this.OscilloscopeIsHighBandwidth = oscilloscopeIsHighBandwidth;
 
-            this.CalculatePeakCurrent();
+            this.CalculatePeakCurrent(pointsAroundPeakToAverage);
             this.CalculateRiseTime(riseTimeStartPercent, riseTimeEndPercent);
             this.CalculateFullWidthAtHalfMax();
             this.CalculateUndershoot();
@@ -278,16 +280,32 @@ namespace ESDWaveformVerifier.CDMJS002
         /// <summary>
         /// Calculates the Peak Current related values
         /// </summary>
-        private void CalculatePeakCurrent()
+        /// <param name="pointsAroundPeakToAverage">Number of points around the absolute peak to average together (Default: 0)</param>
+        private void CalculatePeakCurrent(int pointsAroundPeakToAverage)
         {
             // Calculate the (absolute) Peak Current DataPoint
             DataPoint absolutePeakCurrentDataPoint = this.AbsoluteWaveform.Maximum();
 
-            // Convert to the signed Peak Current DataPoint
-            this.PeakCurrentDataPoint = absolutePeakCurrentDataPoint.InvertYValueIfNegativePolarity(this.WaveformIsPositivePolarity);
+            List<DataPoint> absWfmDataPoints = this.AbsoluteWaveform.DataPoints.ToList();
+            int peakIndex = absWfmDataPoints.IndexOf(absolutePeakCurrentDataPoint);
+            int peakStartIndex = Math.Max(0, peakIndex - pointsAroundPeakToAverage);
+            int peakStopIndex = Math.Min(absWfmDataPoints.Count - 1, peakIndex + pointsAroundPeakToAverage);
+            List<DataPoint> peakDataPoints = new List<DataPoint>();
+            for (int i = peakStartIndex; i <= peakStopIndex; i++)
+            {
+                peakDataPoints.Add(absWfmDataPoints[i]);
+            }
+
+            Waveform peakWaveform = new Waveform(peakDataPoints);
+            double peakCurrent = peakWaveform.Average();
+            if (!this.WaveformIsPositivePolarity)
+            {
+                peakCurrent *= -1.0;
+            }
 
             // Extract the Peak Current value
-            this.PeakCurrentValue = this.PeakCurrentDataPoint.Y;
+            this.PeakCurrentValue = peakCurrent;
+            this.PeakCurrentDataPoint = new DataPoint(absolutePeakCurrentDataPoint.X, peakCurrent);
 
             // Determine the min and max allowed values for the Peak Current to be passing
             Tuple<double, double, double> nomMinMaxPeakCurrent = CDMJS002WaveformCharacteristics.PeakCurrentNominalMinMax(this.SignedVoltage, this.IsLargeTarget, this.OscilloscopeIsHighBandwidth);

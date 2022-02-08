@@ -93,6 +93,19 @@ namespace ESDWaveformVerifier.DataTypes
         }
 
         /// <summary>
+        /// Returns the average Y value of the Waveform, or 0.0 if no DataPoints exist
+        /// </summary>
+        /// <param name="input">The Waveform to find the average Y value of</param>
+        /// <returns>the average Y value of the Waveform, or 0.0 if no DataPoints exist</returns>
+        internal static double Average(this Waveform input)
+        {
+            return input.DataPoints.Count() > 0 ?
+                (from dp in input.DataPoints
+                 select dp.Y).Average() :
+                 0.0;
+        }
+
+        /// <summary>
         /// Returns a new Waveform which only contains the points who's X-axis resides between the boundaries.
         /// </summary>
         /// <param name="input">The original waveform.</param>

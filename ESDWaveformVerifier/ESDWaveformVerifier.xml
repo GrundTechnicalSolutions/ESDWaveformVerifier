@@ -18,7 +18,7 @@
             <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
             <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
         </member>
-        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Boolean,System.Boolean,System.Double,System.Double)">
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.#ctor(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Boolean,System.Boolean,System.Double,System.Double,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:ESDWaveformVerifier.CDMJS002.CDMJS002Standard"/> class
             </summary>
@@ -26,8 +26,9 @@
             <param name="signedVoltage">The signed voltage</param>
             <param name="isLargeTarget">A value indicating whether the CDM target is the Large target or not (small if not)</param>
             <param name="oscilloscopeIsHighBandwidth">A value indicating whether the oscilloscope used is high bandwidth or not</param>
-            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 90%)</param>
-            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 10%)</param>
+            <param name="riseTimeStartPercent">Rise Time starting percentage (Default: 10%)</param>
+            <param name="riseTimeEndPercent">Rise Time ending percentage (Default: 90%)</param>
+            <param name="pointsAroundPeakToAverage">Number of points around the absolute peak to average together (Default: 0)</param>
         </member>
         <member name="P:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.IsLargeTarget">
             <summary>
@@ -149,10 +150,11 @@
             Gets a value indicating whether the Undershoot Value is passing or not
             </summary>
         </member>
-        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculatePeakCurrent">
+        <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculatePeakCurrent(System.Int32)">
             <summary>
             Calculates the Peak Current related values
             </summary>
+            <param name="pointsAroundPeakToAverage">Number of points around the absolute peak to average together (Default: 0)</param>
         </member>
         <member name="M:ESDWaveformVerifier.CDMJS002.CDMJS002Standard.CalculateRiseTime(System.Double,System.Double)">
             <summary>
@@ -469,6 +471,13 @@
             <param name="b">The Exponential Fit constant 'b'</param>
             <param name="timeValues">The values to use for each DataPoint's X value (time)</param>
             <returns>A Waveform using the time values for X, and the Exponential Fit constants 'a' and 'b' to calculate Y</returns>
+        </member>
+        <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.Average(ESDWaveformVerifier.DataTypes.Waveform)">
+            <summary>
+            Returns the average Y value of the Waveform, or 0.0 if no DataPoints exist
+            </summary>
+            <param name="input">The Waveform to find the average Y value of</param>
+            <returns>the average Y value of the Waveform, or 0.0 if no DataPoints exist</returns>
         </member>
         <member name="M:ESDWaveformVerifier.DataTypes.WaveformExtensions.Gates(ESDWaveformVerifier.DataTypes.Waveform,System.Double,System.Double)">
             <summary>
